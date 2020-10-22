@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">TextMe</h1>
+            <nav class="nav_on_pages">
+                <a href="#" class="nav_item">Fresh_aku</a>
+                <a href="#" class="nav_item">Exit</a>
+            </nav>
+        </header>
+        <main class="main">
+            <div class="main_window_head">
+                <p class="name_column">Filter</p>
+                <p class="name_column">JS chat <img src="img/chat_icon.svg" alt="chat_icon"></p>
+                <p class="name_column last_name">Users</p>
+            </div>
+            <div class="center_part">
+                <div class="right_side">
+                    <form action="#" class="find_form">
+                        <label for="user_name" class="input_name">
+                            User name:
+                            <input type="text" id="user_name" class="find_input" placeholder="Name" maxlength="20" pattern="[A-Za-zА-Яа-яЁё]*">
+                        </label>
+                        <label for="date" class="input_name">
+                            Date:
+                            <input type="date" value="yyyy-mm-dd" id="date" class="find_input">
+                        </label>
+                        <label for="text" class="input_name">
+                            Text:
+                            <input type="text" id="text" class="find_input" placeholder="Text" maxlength="50" pattern="[A-Za-zА-Яа-яЁё]*">
+                        </label>
+                        <button type="submit" class="submit_btn">Find</button>
+                    </form>
+                </div>
+                <div class="center_side">
+                    <div class="text_part">
+                        <button type="button" class="load_more_btn">Load more</button>
+                        <div class="messages">
+                            <div class="others">
+                                <div class="message">
+                                    <div class="edit_message">
+                                        <div class="message_container ">
+                                            <p class="text_message">Привет!авормтг васгуивтамр edfchbejhfcb ара увариу  Какие у вас планы? Привет!авормтг васгуивтамр edfchbejhfcb ара увариу  Какие у вас планы? Привет!авормтг васгуивтамр edfchbejhfcb ара увариу  Какие у вас планы? Привет!авормтг васгуивтамр edfchbejhfcb ара увариу  Какие у вас планы?</p>
+                                        </div>
+                                        <div class="edit_btn">
+                                            <a href="#"><img src="img/trash.svg" alt="trash" class="edit_btn_item"></a>
+                                            <a href="#"><img src="img/edit-outlined.svg" alt="edit-outlined" class="edit_btn_item"></a>
+                                        </div>
+                                    </div>
+                                    <div class="name_of_author">
+                                        <p class="text_name_of_author">Artem 11:44 09.10.2020</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="others">
+                                <div class="message">
+                                    <div class="edit_message">
+                                        <div class="message_container ">
+                                            <p class="text_message">gggg gggggg gggggggggg ggggggggg ggggggg gggggggg Привет, как у вас успехи с домашкой?)</p>
+                                        </div>
+                                        <div class="edit_btn">
+                                            <a href="#"><img src="img/trash.svg" alt="trash" class="edit_btn_item"></a>
+                                            <a href="#" ><img src="img/edit-outlined.svg" alt="edit-outlined" class="edit_btn_item"></a>
+                                        </div>
+                                    </div>
+                                    <div class="name_of_author">
+                                        <p class="text_name_of_author">Lera 11:54 09.10.2020</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mine">
+                                <div class="message">
+                                    <div class="edit_message">
+                                        <div class="edit_btn">
+                                            <a href="#"><img src="img/edit-outlined.svg" alt="edit-outlined" class="mine_edit_btn_item"></a>
+                                            <a href="#"><img src="img/trash.svg" alt="trash" class="mine_edit_btn_item"></a>
+                                        </div>
+                                        <div class="message_container mine_message_container">
+                                            <p class="text_message">Давно выяснено, что при оценке дизайна читаемый. </p>
+                                        </div>
+                                    </div>
+                                    <div class="name_of_author mine_name_of_author">
+                                        <p class="text_name_of_author">Fresh_aku 12:18 09.10.2020</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="others">
+                                <div class="message">
+                                    <div class="edit_message">
+                                        <div class="message_container">
+                                            <p class="text_message">Многие думают, что Lorem Ipsum - взятый. </p>
+                                        </div>
+                                        <div class="edit_btn">
+                                            <a href="#"><img src="img/trash.svg" alt="trash" class="edit_btn_item"></a>
+                                            <a href="#"><img src="img/edit-outlined.svg" alt="edit-outlined" class="edit_btn_item"></a>
+                                        </div>
+                                    </div>
+                                    <div class="name_of_author">
+                                        <p class="text_name_of_author">Anton 12:33 09.10.2020</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mine">
+                                <div class="message">
+                                    <div class="edit_message">
+                                        <div class="edit_btn">
+                                            <a href="#"><img src="img/edit-outlined.svg" alt="edit-outlined" class="mine_edit_btn_item"></a>
+                                            <a href="#"><img src="img/trash.svg" alt="trash" class="mine_edit_btn_item"></a>
+                                        </div>
+                                        <div class="message_container mine_message_container">
+                                            <p class="text_message">Успехов всем.</p>
+                                        </div>
+                                    </div>
+                                    <div class="name_of_author mine_name_of_author">
+                                        <p class="text_name_of_author">Fresh_aku 12:50 09.10.2020</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="others">
+                                <div class="message">
+                                    <div class="edit_message">
+                                        <div class="message_container">
+                                            <p class="text_message">Привет! Какие у вас планы?</p>
+                                        </div>
+                                        <div class="edit_btn">
+                                            <a href="#"><img src="img/trash.svg" alt="trash" class="edit_btn_item"></a>
+                                            <a href="#"><img src="img/edit-outlined.svg" alt="edit-outlined" class="edit_btn_item"></a>
+                                        </div>
+                                    </div>
+                                    <div class="name_of_author">
+                                        <p class="text_name_of_author">Artem 11:44 09.10.2020</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="others">
+                                <div class="message">
+                                    <div class="edit_message">
+                                        <div class="message_container">
+                                            <p class="text_message">Привет! Какие у вас планы?</p>
+                                        </div>
+                                        <div class="edit_btn">
+                                            <a href="#"><img src="img/trash.svg" alt="trash" class="edit_btn_item"></a>
+                                            <a href="#"><img src="img/edit-outlined.svg" alt="edit-outlined" class="edit_btn_item"></a>
+                                        </div>
+                                    </div>
+                                    <div class="name_of_author">
+                                        <p class="text_name_of_author">Artem 11:44 09.10.2020</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="others">
+                                <div class="message">
+                                    <div class="edit_message">
+                                        <div class="message_container">
+                                            <p class="text_message">Привет! Какие у вас планы?</p>
+                                        </div>
+                                        <div class="edit_btn">
+                                            <a href="#"><img src="img/trash.svg" alt="trash" class="edit_btn_item"></a>
+                                            <a href="#"><img src="img/edit-outlined.svg" alt="edit-outlined" class="edit_btn_item"></a>
+                                        </div>
+                                    </div>
+                                    <div class="name_of_author">
+                                        <p class="text_name_of_author">Artem 11:44 09.10.2020</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="others">
+                                <div class="message">
+                                    <div class="edit_message">
+                                        <div class="message_container">
+                                            <p class="text_message">Привет! Какие у вас планы?</p>
+                                        </div>
+                                        <div class="edit_btn">
+                                            <a href="#"><img src="img/trash.svg" alt="trash" class="edit_btn_item"></a>
+                                            <a href="#"><img src="img/edit-outlined.svg" alt="edit-outlined" class="edit_btn_item"></a>
+                                        </div>
+                                    </div>
+                                    <div class="name_of_author">
+                                        <p class="text_name_of_author">Artem 11:44 09.10.2020</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="others">
+                                <div class="message">
+                                    <div class="edit_message">
+                                        <div class="message_container">
+                                            <p class="text_message">Привет! Какие у вас планы?</p>
+                                        </div>
+                                        <div class="edit_btn">
+                                            <a href="#"><img src="img/trash.svg" alt="trash" class="edit_btn_item"></a>
+                                            <a href="#"><img src="img/edit-outlined.svg" alt="edit-outlined" class="edit_btn_item"></a>
+                                        </div>
+                                    </div>
+                                    <div class="name_of_author">
+                                        <p class="text_name_of_author">Artem 11:44 09.10.2020</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="type_part">
+                        <p class="typing_text"><textarea class="textarea_message" placeholder="Type a message..."></textarea></p>
+                        <button type="submit" class="send_btn">Send</button>
+                    </div>
+                </div>
+                <div class="left_side">
+                    <div class="chat list_of_users">
+                        <p class="name_of_chat">JS chat<img src="img/chat_icon.svg" alt="chat_icon" class="chat_icon"></p>
+                    </div>
+                    <div class="chat list_of_users">
+                        <p class="name_of_chat">Karina</p>
+                        <div class="online_icon"></div>
+                    </div>
+                    <div class="chat list_of_users">
+                        <p class="name_of_chat">Artem</p>
+                    </div>
+                    <div class="chat list_of_users">
+                        <p class="name_of_chat">Anton</p>
+                    </div>
+                    <div class="chat list_of_users">
+                        <p class="name_of_chat">Lera</p>
+                        <div class="online_icon"></div>
+                    </div>
+                    <div class="chat list_of_users">
+                        <p class="name_of_chat">Rsschool chat<img src="img/chat_icon.svg" alt="chat_icon" class="chat_icon"></p>
+                    </div>
+                    <div class="chat list_of_users">
+                        <p class="name_of_chat">Lena</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="author">
+                <p class="author_text">Akulenok Karina</p>
+                <a href="mailto:karina_akulenok@mail.ru" class="author_text author_link">karina_akulenok@mail.ru</a>
+            </div>
+            <p class="logo">TextMe</p>
+            <p class="date_of_made">22.10.2020</p>
+        </footer>
+    </div>
+</body>
+</html>

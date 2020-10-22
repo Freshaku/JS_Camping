@@ -1,0 +1,96 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    background-color: #FFF;
+    color: #000;
+    font-family: 'Piazzolla', serif;
+}
+.container{
+    width: 90%;
+    max-width: 22rem;
+    margin: 10% auto;
+    background: #fff;
+    border-radius: 3px;
+    padding: 2%;
+}
+
+
+.btn{
+    font-family: 'Piazzolla', serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    color: #FFF;
+    background-color: #369;
+    width: 10rem;
+    height: 3rem;
+    border: none; 
+    position: relative;
+    left: 50%;
+    margin-top: 5%;
+    border-radius: 3px;
+    transform: translate(-50%, 0);
+}
+
+.btn:active{
+    border: none;
+
+}
+
+.modalDialog{
+    margin: 0; 
+    padding: 0; 
+    position: fixed; 
+    top:0; 
+    bottom:0;
+    left:0;
+    right:0;
+    background: rgba(0,0,0,0.5);
+    z-index:100; 
+    opacity:0; 
+    pointer-events: none; 
+}
+
+.title{
+    font-family: 'Piazzolla', serif;
+    font-size: 24px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 5%; 
+    margin: 0;
+}
+
+.text{
+    font-family: 'Piazzolla', serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 0;
+    margin: 4% 0 8% 0;
+}
+
+.modalDialog:target{
+    opacity: 1; 
+    pointer-events: auto; 
+}
+
+.btn_ok{
+    width: 2.5rem;
+    height: 1.5rem;
+    margin-left: 9rem;
+    margin-top: 6rem;
+}
+
+.close{
+    display: block;
+    font-family: sans-serif;
+    color: #606061;
+    width: 50%;
+    margin-left: 19rem;
+    margin-top: -1rem;
+    text-decoration: none;
+}
+
+.close:hover{
+    color: #000;
+}
+
