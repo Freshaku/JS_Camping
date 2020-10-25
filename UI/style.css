@@ -38,15 +38,15 @@ textarea:focus {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 3rem 5%;
+    margin: 3rem 6rem;
 }
 
 .logo{
     font-family: 'Lobster Two', cursive;
     font-style: normal;
     font-weight: normal;
-    font-size: 1.1rem;
-    line-height: 1.2rem;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
 }
 
 .nav-item{
@@ -264,13 +264,14 @@ input::-moz-placeholder{
 }
 
 .send-btn{
-    width: 20%;
+    width: 4rem;
     height: 2rem;
     background: rgba(249, 190, 177, 0.85);
     border: none;
+    display: flex;
     margin-top: 1rem;
-    margin-bottom: 1rem;
     margin-right: 1.8rem;
+    align-items: center;
     text-align: center;
 }
 
@@ -292,11 +293,15 @@ input::-moz-placeholder{
     height: 3.5rem;
     text-align: left;
     margin-top: 0.3rem;
-    padding: 1.2rem;
+    /* padding-left: 1.2rem; */
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+}
+
+.name-of-chat{
+    margin-left: 1.2rem;
 }
 
 .chat-icon{
@@ -308,7 +313,9 @@ input::-moz-placeholder{
     border-radius: 50%;
     width: 0.4rem;
     height: 0.4rem;
-    margin-top: 0.3rem;
+    display: flex;
+    align-items: center;
+    margin-right: 1.2rem;
 }
 
 .users:hover{
@@ -324,7 +331,9 @@ input::-moz-placeholder{
 }
 
 .author-text{
-    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
 }
 
 .author-link{
@@ -337,11 +346,13 @@ input::-moz-placeholder{
 }
 
 .date-was-made{
-    margin-top: 3.2rem;
-    margin-right: 0;
+    /* margin-top: 3.2rem;
+    margin-right: 0; */
+    display: flex;
+    align-items: flex-end;
 }
 
-@media(max-width: 1100px){
+@media screen and (max-width: 1100px){
     .find-input{
         margin-left: 1.5rem;
     }
@@ -355,7 +366,7 @@ input::-moz-placeholder{
     }
 }
 
-@media(max-width: 992px){
+@media screen and (max-width: 992px){
     .find-input{
         margin-left: 1rem;
     }
@@ -383,7 +394,7 @@ input::-moz-placeholder{
     }
 }
 
-@media(max-width: 800px){
+@media screen and (max-width: 800px){
     .find-input{
         margin-left: 0.2rem;
     }
@@ -418,7 +429,7 @@ input::-moz-placeholder{
     }
 }
 
-@media(max-width: 768px){
+@media screen and (max-width: 768px){
     .right-side{
         display: none;
     }
