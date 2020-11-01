@@ -12,18 +12,15 @@ body{
     color: #000000;
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1.1rem;
     font-weight: 400;
     background: #F2F2F2;
 }
 .container{
     max-width: 100%;
     margin: 0 auto;
-}
-
-button, 
-button:active, 
-button:focus {
-    outline: none;
 }
 
 input, 
@@ -41,26 +38,24 @@ textarea:focus {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 3rem 5%;
+    margin: 3rem 6rem;
 }
 
 .logo{
     font-family: 'Lobster Two', cursive;
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
-    line-height: 18px;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
 }
 
-.nav_item{
-    font-size: 14px;
-    line-height: 16px;
+.nav-item{
     text-decoration: none;
     color: #000000;
     margin-right: 1.4rem;
 }
 
-.nav_item:hover{
+.nav-item:hover{
     color: #F28177;
 }
 
@@ -70,53 +65,48 @@ textarea:focus {
     margin: 5rem 12rem;
 }
 
-.main_window_head{
+.main-window-head{
     background: #F2CBC2;
     width: 100%;
     height: 4rem;
     border-radius: 2.4rem 2.4rem 0 0;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 }
 
-.name_column{
-    font-style: normal;
+.name-column{
     font-weight: bold;
-    font-size: 16px;
-    line-height: 18px;
-    margin-right: 34%;
+    font-size: 1.1rem;
+    line-height: 1.2rem;
+    margin-right: 8rem;
 }
 
-.last_name{
+.last-name{
     margin-right: 0;
 }
 
-.center_part{
+.center-part{
     width: 100%;
     display: flex;
 }
 
-.right_side{
+.right-side{
     background: #F9B7B1;
     width: 20%;
     height: 36.5rem;
     border-radius: 0 0 0 2.4rem;
 }
 
-.find_form{
+.find-form{
     padding-top: 2rem;
 }
 
-.input_name{
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
+.input-name{
     margin-left: 1.7rem;
 }
 
-.find_input{
+.find-input{
     width: 75%;
     height: 1.5rem;
     background: rgba(242, 209, 201, 0.68);
@@ -136,12 +126,8 @@ input::-moz-placeholder{
     color: rgba(0, 0, 0, 0.6); 
 }
 
-.submit_btn{
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-    width: 25%;
+.submit-btn{
+    width: 3.5rem;
     height: 1.5rem;
     border: none;
     text-align: center;
@@ -150,39 +136,34 @@ input::-moz-placeholder{
     border-radius: 2.4rem;
 }
 
-.submit_btn:hover{
+.submit-btn:hover{
     cursor: pointer;
     background: #EF574A;
 }
 
-.center_side{
+.center-side{
     width: 60%;
-    height: 36.5rem;
 }
 
-.text_part{
+.text-part{
     background: #ffffff;
     width: 100%;
     height: 32.5rem;
     overflow: auto;
 }
 
-.load_more_btn{
+.load-more-btn{
     background-color: rgba(242, 203, 194, 0.6);
     border-radius: 1.4rem;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
     width: 20%;
     height: 2rem;
     border: none;
     text-align: center;
     margin: 1rem 40%;
+    cursor: pointer;
 }
 
-.load_more_btn:hover{
-    cursor: pointer;
+.load-more-btn:hover{  
     background-color: rgb(242, 203, 194);
 }
 
@@ -196,26 +177,49 @@ input::-moz-placeholder{
     margin-bottom: 5%;
 }
 
-.edit_message{
+.edit-message{
     display: flex;
     align-items: center;
 }
 
-.message_container{
+/* .message-avatar{
+    display: flex;
+    align-content: flex-end;
+    margin-left: 1rem;
+    margin-right: 0.5em;
+}
+
+.circle{
+    position: relative;
+
+    width: 3rem;
+    height: 3rem;
+
+    border-radius: 50%;
+    border: 0.1rem solid #000;
+
+    background-position: center;
+    background-size: 100%;
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    background-image: url(https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/grandma_elderly_nanny_avatar-512.png);
+} */
+
+.message-container{
+    margin-left: 1rem;
     display: flex;
     width: 21rem;
     min-height: 3rem;
     background: #F2F2F2;
     border-radius: 2rem 2rem 2rem 0;
-    margin-left: 1.4rem;
     padding: 1rem;
     margin-bottom: 0.2rem;
 }
 
-.mine_message_container{
+.mine-message-container{
     border-radius: 2rem 2rem 0 2rem;
     margin-left: 0;
-    margin-right: 1.4rem;
+    margin-right: 1rem;
 }
 
 .others{
@@ -230,57 +234,48 @@ input::-moz-placeholder{
     justify-content: flex-end;
 }
 
-.text_message{
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-}
-
-.edit_btn{
+.edit-btn{
     display: flex;
 }
 
-.edit_btn_item{
+.edit-btn-item{
     margin-right: 0;
     margin-left: 0.5rem;
 }
 
-.mine_edit_btn_item{
+.mine-edit-btn-item{
     margin-right: 0.5rem;
     margin-left: 0;
 }
 
-.name_of_author{
+.name-of-author{
     margin-left: 0.5rem;
 }
 
-.mine_name_of_author{
+.mine-name-of-author{
     margin-left: 50%;
     margin-right: 1.4rem;
 }
 
-.text_name_of_author{
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 14px;
+.text-name-of-author{
+    font-size: 0.8rem;
+    line-height: 1rem;
     margin-left: 1.4rem;
 }
 
-.type_part{
+.type-part{
     background: #F2CBC2;
     width: 100%;
     height: 4rem;
     display: flex;
 }
 
-.typing_text{
+.typing-text{
    width: 100%;
 }
 
 
-.textarea_message{
+.textarea-message{
     overflow: hidden;
     width: 95%;
     height: 2rem;
@@ -291,62 +286,62 @@ input::-moz-placeholder{
     resize: none;
 }
 
-.send_btn{
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-    width: 20%;
+.send-btn{
+    width: 6rem;
     height: 2rem;
     background: rgba(249, 190, 177, 0.85);
     border: none;
+    display: flex;
     margin-top: 1rem;
-    margin-bottom: 1rem;
     margin-right: 1.8rem;
+    align-items: center;
     text-align: center;
 }
 
-.send_btn:hover{
+.send-btn:hover{
     cursor: pointer;
     color: #F28177;
 }
 
-.left_side{
+.left-side{
     background: #F9B7B1;
     width: 20%;
     height: 36.5rem;
     border-radius: 0 0 2.4rem 0;
 }
 
-.list_of_users{
+.users{
     background: #F9BEB1;
     width: 100%;
     height: 3.5rem;
     text-align: left;
     margin-top: 0.3rem;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-    padding: 1.2rem;
+    /* padding-left: 1.2rem; */
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
 }
 
-.chat_icon{
+.name-of-chat{
+    margin-left: 1.2rem;
+}
+
+.chat-icon{
     margin-left: 0.3rem;
 }
 
-.online_icon{
+.online-icon{
     background: #F28177;
     border-radius: 50%;
     width: 0.4rem;
     height: 0.4rem;
-    margin-top: 0.3rem;
+    display: flex;
+    align-items: center;
+    margin-right: 1.2rem;
 }
 
-.list_of_users:hover{
-    cursor: pointer;
+.users:hover{
     background: #FBB4A4;
 }
 /* footer */
@@ -355,117 +350,135 @@ input::-moz-placeholder{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 2rem 5%;
+    margin: 2rem 6rem;
 }
 
-.author_text{
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-    margin-bottom: 2rem;
+.author-text{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
 }
 
-.author_link{
+.author-link{
     text-decoration: none;
     color: #000000;
 }
 
-.author_link:hover{
+.author-link:hover{
     color: #F28177;
 }
 
-.date_of_made{
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-    margin-top: 3.2rem;
-    margin-right: 0;
+.date-was-made{
+    /* margin-top: 3.2rem;
+    margin-right: 0; */
+    display: flex;
+    align-items: flex-end;
 }
 
-@media(max-width: 1100px){
-    .find_input{
+@media screen and (max-width: 1100px){
+    .find-input{
         margin-left: 1.5rem;
     }
-    .message_container{
+    .message-container{
         margin-left: 0.2rem;
         width: 20rem;
     }
-    .mine_message_container{
+    .mine-message-container{
         margin-right: 0.2rem;
         width: 20rem;
     }
 }
 
-@media(max-width: 992px){
-    .find_input{
+@media screen and (max-width: 992px){
+    .find-input{
         margin-left: 1rem;
     }
-    .message_container{
+    .message-container{
         margin-left: 0.2rem;
         width: 15rem;
     }
-    .mine_message_container{
+    .mine-message-container{
         margin-right: 0.2rem;
         width: 15rem;
     }
-    .input_name{
+    .input-name{
         margin-left: 1rem;
     }
-    .submit_btn {
+    .submit-btn {
         width: 35%;
         margin-left: 55%;
     }
-    .mine_name_of_author {
+    .mine-name-of-author {
         margin-left: 35%;
     }
-    .load_more_btn {
+    .load-more-btn {
         width: 30%;
         margin: 1rem 35%;
     }
 }
 
-@media(max-width: 800px){
-    .find_input{
+@media screen and (max-width: 800px){
+    .find-input{
         margin-left: 0.2rem;
     }
-    .message_container{
+    .message-container{
         margin-left: 0.2rem;
         width: 10rem;
     }
-    .mine_message_container{
+    .mine-message-container{
         margin-right: 0.2rem;
         width: 10rem;
     }
-    .input_name{
+    .input-name{
         margin-left: 0.2rem;
         text-align: center;
     }
-    .submit_btn {
+    .submit-btn {
         width: 50%;
         margin-left: 25%;
     }
-    .mine_name_of_author {
+    .mine-name-of-author {
         margin-left: 35%;
     }
-    .load_more_btn {
+    .load-more-btn {
         width: 40%;
         margin: 1rem 30%;
     }
-    .name_of_author {
+    .name-of-author {
         margin-left: -0.5rem;
     }
-    .list_of_users{
+    .users{
         padding: 0.5rem;
     }
 }
 
-@media(max-width: 768px){
-    .right_side{
+@media screen and (max-width: 768px){
+    .main{
+        margin: 0;
+    }
+    .right-side{
         display: none;
     }
-    .left_side{
+    .left-side{
         display: none;
+    }
+    .footer{
+        display: none;
+    }
+    .center-side{
+        width: 100%;
+    }
+    .header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 3rem 6rem;
+    }
+    .nav-on-pages{
+        display: none;
+    }
+
+    .textarea-message {
+        width: 100%;
     }
 }
