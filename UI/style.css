@@ -182,13 +182,36 @@ input::-moz-placeholder{
     align-items: center;
 }
 
+/* .message-avatar{
+    display: flex;
+    align-content: flex-end;
+    margin-left: 1rem;
+    margin-right: 0.5em;
+}
+
+.circle{
+    position: relative;
+
+    width: 3rem;
+    height: 3rem;
+
+    border-radius: 50%;
+    border: 0.1rem solid #000;
+
+    background-position: center;
+    background-size: 100%;
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    background-image: url(https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/grandma_elderly_nanny_avatar-512.png);
+} */
+
 .message-container{
+    margin-left: 1rem;
     display: flex;
     width: 21rem;
     min-height: 3rem;
     background: #F2F2F2;
     border-radius: 2rem 2rem 2rem 0;
-    margin-left: 1.4rem;
     padding: 1rem;
     margin-bottom: 0.2rem;
 }
@@ -196,7 +219,7 @@ input::-moz-placeholder{
 .mine-message-container{
     border-radius: 2rem 2rem 0 2rem;
     margin-left: 0;
-    margin-right: 1.4rem;
+    margin-right: 1rem;
 }
 
 .others{
@@ -264,7 +287,7 @@ input::-moz-placeholder{
 }
 
 .send-btn{
-    width: 4rem;
+    width: 6rem;
     height: 2rem;
     background: rgba(249, 190, 177, 0.85);
     border: none;
@@ -430,10 +453,32 @@ input::-moz-placeholder{
 }
 
 @media screen and (max-width: 768px){
+    .main{
+        margin: 0;
+    }
     .right-side{
         display: none;
     }
     .left-side{
         display: none;
+    }
+    .footer{
+        display: none;
+    }
+    .center-side{
+        width: 100%;
+    }
+    .header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 3rem 6rem;
+    }
+    .nav-on-pages{
+        display: none;
+    }
+
+    .textarea-message {
+        width: 100%;
     }
 }
