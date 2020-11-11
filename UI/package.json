@@ -1,0 +1,25 @@
+{
+  "name": "ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "eslint-config-airbnb": "^18.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.13.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Freshaku/JS_Camping.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Freshaku/JS_Camping/issues"
+  },
+  "homepage": "https://github.com/Freshaku/JS_Camping#readme"
+}
