@@ -1,0 +1,40 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": ["airbnb/base"],
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "ecmaFeatures": {
+          "experimentalObjectRestSpread": true
+        }
+    },
+    "rules": {
+        "no-plusplus": "off",
+        "no-nested-ternary": "off",
+        "no-param-reassign": "off",
+        "no-return-assign": "off",
+        "object-curly-spacing": "warn",
+        "comma-spacing": "warn",
+        "prefer-const": "warn",
+        "semi": "warn",
+        "curly": "warn",
+        "wrap-iife": "warn",
+        "no-shadow": "warn",
+        "comma-dangle": "warn",
+        "keyword-spacing": "warn",
+        "space-before-blocks": "warn",
+        "no-multi-spaces": "warn",
+        "no-extra-semi": "warn",
+        "padded-blocks": "warn",
+        "space-in-parens": "warn",
+        "no-underscore-dangle": "warn",
+        "lines-between-class-members": "warn",
+        "nonblock-statement-body-position": "warn",
+        "max-classes-per-file": "warn",
+        "no-multiple-empty-lines": "warn",
+        "space-before-function-paren": "warn",
+        "indent": "off"
+    }
+}
