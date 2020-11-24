@@ -26,6 +26,10 @@ class Message{
         return this._author;
     }
 
+    set author(author){
+        this._author = author || this.user;
+    }
+
     set to(to){
         this.to = to;
         this.isPersonal = !!to;
@@ -38,6 +42,11 @@ class Message{
 
 class MessageList{
 
+    constructor(messages){
+        this._messages = messages.slice();
+        this._user = user;
+    }
+
     static _filterObj = {
         author: (item, author) => !author || item.author.toLowerCase().includes(author.toLowerCase()),
         text: (item, text) => !text || item.text.toLowerCase().includes(text.toLowerCase()),
@@ -45,22 +54,24 @@ class MessageList{
         dateFrom: (item, dateFrom) => !dateFrom || item.createdAt > dateFrom
     };
 
-    constructor(messages){
-        this._messages = messages.slice();
-        this._user = user;
-    }
-
     get user() {
         return this._user;
     }
 
+    set user(user) {
+        this._user = user;
+    }
+
     getPage(skip = 0, top = 10, filterConfig = {}){
-        let result = this._messages.slice(skip, skip + top);
+        let result = this._messages.slice();
         Object.keys(filterConfig).forEach((key) => {
             result = result.filter((item) =>  MessageList._filterObj[key](item, filterConfig[key]));
         });
         result.sort((a, b) => a.createdAt - b.createdAt);
-        // result.slice(skip, skip + top);
+        result.splice(0, skip);
+        if (result.length > top){
+            result.splice(top);
+        }
         return result;
     }
 
@@ -69,7 +80,7 @@ class MessageList{
     }
 
     add(msg){
-        if (MessageList.validate(msg)) {
+        if (this._user && MessageList.validate(msg)) {
             msg.id = `${+new Date()}`;
             msg.createdAt = new Date();
             msg.author = user;
@@ -80,9 +91,9 @@ class MessageList{
     }
 
     edit(id, msg){
-        let index = this._messages.findIndex(msg => msg.id == id);
-        if (MessageList.validate(msg)){
-            this._messages[index].text = msg.text;
+        let index = this._messages.findIndex(message => message.id == id);
+        if (this._user && MessageList.validate(msg)){
+            this._messages[index].text = msg;
             return true;
         }
         return false;
@@ -90,17 +101,18 @@ class MessageList{
 
     remove(id){
         let index = this._messages.findIndex(message => message.id === id);
-        if(index === -1){
-            return false;       
-        }else{
-            this._messages.splice(index, 1);
-            return true;         
+        if (this._user){
+            if(index === -1){
+                return false;       
+            }else{
+                this._messages.splice(index, 1);
+                return true;         
+            }
         }
     }
 
     static validate(message){
-        if (typeof(message.id && message.text && message.author) === 'string'
-        && typeof (message.createdAt) === 'object' && typeof (message.isPersonal) === 'boolean' && (typeof (message.to) === 'string' || typeof (message.to) === 'undefined')){
+        if (typeof(message.id && message.text && message.author) === 'string' && message.text.length <= 200 && typeof (message.createdAt) === 'object' && typeof (message.isPersonal) === 'boolean' && (typeof (message.to) === 'string' || typeof (message.to) === 'undefined')){
             return true;
         }else{
             return false;
