@@ -1,5 +1,5 @@
 "use strict";
-let user = 'Fresh-aku';
+const user = 'Fresh-aku';
 class Message{
     constructor(text,to, id = null, createdAt = null, author = null, isPersonal = null){
         this._id =id;
@@ -136,8 +136,139 @@ class MessageList{
     }
 }
 
+class UserList{
+    constructor(users, activeUsers){
+        this._users = users;
+        this._activeUsers = activeUsers;
+    }
 
-let messages = [
+    get users(){
+        return this._users;
+    }
+
+    set users(users){
+        this._users = users;
+    }
+
+    get activeUsers(){
+        return this._activeUsers;
+    }
+
+    set activeUsers(activeUsers){
+        this._activeUsers = activeUsers;
+    }
+}
+
+class HeaderView{
+    constructor(containerId){
+        this.containerId = containerId;
+    }
+
+    display(user){
+        const mainUser = document.getElementById(this.containerId);
+        if(user){
+            mainUser.textContent = user;
+        }
+    }
+}
+
+function formatDate(date){
+    let d = date.getDate();
+    let m = date.getMonth();
+    let y = date.getFullYear();
+    let h = date.getHours();
+    let min = date.getMinutes();
+    if(d < 10 && m < 10 && h < 10 && min < 10){
+        d = `0${d}`;
+        m = `0${m}`;
+        h = `0${h}`;
+        min = `0${min}`;
+    }
+
+    return `${h}:${min} ${d}.${m}.${y}`
+}
+
+class MessagesView{
+    constructor(containerId){
+        this.containerId = containerId;
+    }
+    display(msg){
+        const messages = document.getElementById(this.containerId);
+        messages.innerHTML = msg.map((msg) => this.getMsg(msg)).join("");
+    }
+    getMsg(msg, text, author, _createdAt,to){
+        if(msg._author !== user){
+            return `
+                <div class="others">
+                    <div class="message">
+                        <div class="edit-message">
+                            <div class="message-container ">
+                                <p class="text-message">${msg.text}</p>
+                            </div>
+                        </div>
+                        <div class="name-of-author">
+                            <p class="text-name-of-author">${msg._author}  ${formatDate(msg._createdAt)}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else{
+            return `
+                <div class="mine">
+                    <div class="message">
+                        <div class="edit-message">
+                            <div class="edit-btn">
+                                <a href="#"><img src="img/edit-outlined.svg" alt="edit-outlined" class="mine-edit-btn-item"></a>
+                                <a href="#"><img src="img/trash.svg" alt="trash" class="mine-edit-btn-item"></a>
+                            </div>
+                            <div class="message-container mine-message-container">
+                                <p class="text-message">${msg.text}</p>
+                            </div>
+                        </div>
+                        <div class="name-of-author mine-name-of-author">
+                            <p class="text-name-of-author">${msg._author}  ${formatDate(msg._createdAt)}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+}
+class UsersView{
+    constructor(containerId){
+        this.containerId = containerId;
+    }
+    display(users){
+        const allUsers = document.getElementById(this.containerId);
+        allUsers.innerHTML = users.map((userr) => this.getUsers(userr)).join("");
+    }
+    getUsers(name) {
+        if(name !== activeF && name !== activeS){
+            if(name === chatF || name === chatS){
+                return `
+                <div class="users">
+                <p class="name-of-chat">${name}<img src="img/chat_icon.svg" alt="chat-icon" class="chat-icon"></p>
+                </div>
+                `;
+            }else{
+                return `
+                <div class="users">
+                    <p class="name-of-chat">${name}</p>
+                </div>
+            `;
+            }
+        }else{
+            return `
+            <div class="users">
+                <p class="name-of-chat">${name}</p>
+                <div class="online-icon"></div>
+            </div>
+            `;
+        }
+    }
+}
+
+const messages = [
     new Message(
         'Привет, как у вас успехи с домашкой?)',
         false,    
@@ -288,32 +419,63 @@ let messages = [
     )
 ];
 
-let MsgList = new MessageList(messages);
+const usersL = ["JS chat", "Karina", "Artem", "Anton", "Lera", "Rsschool chat", "Lena"];
+const chatF = 'JS chat';
+const chatS = 'Rsschool chat';
+const activeF = 'Karina';
+const activeS = 'Lera';
 
-// проверка
-console.log('Возвращает первые 10 сообщений', MsgList.getPage(0, 10));
-console.log('Возвращает 10 сообщений, начиная с 11-ого', MsgList.getPage(10, 10));
-console.log('Выбирает те сообщения, где автор содержит подстроку ‘Artem’, возвращает первые 10 сообщений', MsgList.getPage(0, 10, {author: 'Artem'}));
-console.log('Выбирает те сообщения, где автор содержит подстроку ‘тогда’, возвращает первые 10 сообщений', MsgList.getPage(0, 10, {text: 'Привет'}));
-console.log(MsgList.edit(1, 'hi'));
-console.log(MsgList.edit(5, 'hello'));
-console.log(MsgList.get(10));
-// проверка
-console.log('добавлено новое сообщение, которое проходит валидность', MsgList.add({
-    id: '22',
-    text: 'Ну что, все готовы?',
-    createdAt: new Date('2020-10-10T11:55:00'),
-    author: 'Lena',
-    isPersonal: false,
-}));
-console.log('Поступило новое сообщение, которое не проходит валидность', MsgList.add({
-    id: '23',
-    text: 'Да, идем!',
-    createdAt: '2020-10-10T11:55:00',
-    author: 'Artem',
-    isPersonal: false,
-}));
-console.log('Удалено сообщение', MsgList.remove('8'));
-console.log(MsgList.addAll(messages));
-MsgList.clear();
-console.log(MsgList);
+const MsgList = new MessageList(messages);
+const userList = new UserList(usersL); 
+const headerView = new HeaderView('main-user');
+const messagesView = new MessagesView('messages');
+const usersView = new UsersView('users');
+function setCurrentUser(user){
+    MsgList.user = user;
+    headerView.display(user);
+}
+
+function addMessage(msg){
+    if (this._user && MsgList.validate(msg)) {
+        msg.id = `${+new Date()}`;
+        msg.createdAt = new Date();
+        msg.author = user;
+        messages.push(msg);
+        messagesView.display(MsgList.getPage(0,10));
+    }
+    return false;
+}
+
+function editMessage(id, msg){
+    let index = MsgList.findIndex(message => message.id == id);
+        if (this._user && MsgList.validate(msg)){
+            MsgList[index].text = msg;
+            messagesView.display(MsgList.getPage(0,10));
+        }
+        return false;
+}
+
+function removeMessage(id){
+    let index = MsgList.findIndex(message => message.id === id);
+    if (this._user){
+        if(index === -1){
+            return false;       
+        }else{
+            MsgList.splice(index, 1);
+            messagesView.display(MsgList.getPage(0,10));
+        }
+    }
+}
+
+function showMessages(skip = 0, top = 10, filterConfig = {}){
+    messagesView.display(MsgList.getPage(skip, top, filterConfig));
+}
+
+function showUsers(){
+    usersView.display(userList.users);
+}
+
+
+setCurrentUser(user);
+showMessages(0, 10);
+showUsers();
