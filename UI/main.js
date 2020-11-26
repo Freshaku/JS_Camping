@@ -196,7 +196,7 @@ class MessagesView{
         const messages = document.getElementById(this.containerId);
         messages.innerHTML = msg.map((msg) => this.getMsg(msg)).join("");
     }
-    getMsg(msg, text, author, _createdAt,to){
+    getMsg(msg, text, _author, _createdAt,to){
         if(msg._author !== user){
             return `
                 <div class="others">
@@ -430,41 +430,28 @@ const userList = new UserList(usersL);
 const headerView = new HeaderView('main-user');
 const messagesView = new MessagesView('messages');
 const usersView = new UsersView('users');
+
 function setCurrentUser(user){
     MsgList.user = user;
     headerView.display(user);
 }
 
 function addMessage(msg){
-    if (this._user && MsgList.validate(msg)) {
-        msg.id = `${+new Date()}`;
-        msg.createdAt = new Date();
-        msg.author = user;
-        messages.push(msg);
-        messagesView.display(MsgList.getPage(0,10));
-    }
-    return false;
+    MsgList.user = user;
+    MsgList.add(msg);
+    messagesView.display(MsgList.getPage(0,10));
 }
 
 function editMessage(id, msg){
-    let index = MsgList.findIndex(message => message.id == id);
-        if (this._user && MsgList.validate(msg)){
-            MsgList[index].text = msg;
-            messagesView.display(MsgList.getPage(0,10));
-        }
-        return false;
+    MsgList.user = user;
+    MsgList.edit(id, msg);
+    messagesView.display(MsgList.getPage(0,10));
 }
 
 function removeMessage(id){
-    let index = MsgList.findIndex(message => message.id === id);
-    if (this._user){
-        if(index === -1){
-            return false;       
-        }else{
-            MsgList.splice(index, 1);
-            messagesView.display(MsgList.getPage(0,10));
-        }
-    }
+    MsgList.user = user;
+    MsgList. remove(id);
+    messagesView.display(MsgList.getPage(0,10));
 }
 
 function showMessages(skip = 0, top = 10, filterConfig = {}){
