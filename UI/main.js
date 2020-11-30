@@ -48,7 +48,8 @@ class MessageList{
     }
 
     static validate(msg){
-        if (typeof (msg.text) === 'string' && (msg.text.length) <= 200 && typeof (msg.isPersonal) === 'boolean' && (typeof (msg.to) === 'string' || typeof (msg.to) === 'undefined')){
+        // debugger;
+        if (typeof (msg.text) === 'string' && (msg.text.length) <= 200 ){
             return true;
         }else{
             return false;
@@ -88,28 +89,34 @@ class MessageList{
     }
 
     add(msg){
-        if (this._user && MessageList.validate(msg)) {
-            msg.id = `${+new Date()}`;
-            msg.createdAt = new Date();
-            msg.author = user;
-            this._messages.push(msg);
+        if (!this._user){
+            return false;
+        }
+        const newMsg = new Message(
+            msg,
+            false,
+            `${+new Date()}`,
+            new Date(),
+            user,
+        );
+        if (MessageList.validate(newMsg)) {
+            this._messages.push(newMsg);
             return true;
         }
         return false;
     }
 
     edit(id, msg){
-        
-        let index = this._messages.find(message => message.id === id);
-        // let newMsg = new Message({
-        //     id: msg.id, text: msg.text, createdAt: msg.createdAt, author: msg.author, isPersonal: msg.isPersonal
-        //   });
-        if (this._user){
-            if(MessageList.validate(msg)){
-                index.text = msg.text;
-                return true;
-            }
+        // debugger;
+        let foundMsg = this._messages.find(message => message.id === id);
+        if (!this._user){
             return false;
+        }
+        foundMsg.text = msg;
+        const newMsg = new Message( foundMsg.text, foundMsg.id,foundMsg.to, foundMsg.createdAt,  foundMsg.author, foundMsg.isPersonal);
+        if(MessageList.validate(newMsg)){
+            foundMsg = newMsg;
+            return true;
         }
         return false;
     }
@@ -444,13 +451,6 @@ function setCurrentUser(user){
 }
 
 function addMessage(msg){
-    // MsgList.user = user;
-    // if (MsgList.add(msg)) {
-    //     const newMsg = MsgList.msgs.slice(-1)[0];
-    //     messagesView.addMessage(newMsg, MsgList.user);
-    //     return true;
-    //   }
-    //   return false;
     MsgList.user = user;
     if(MsgList.add(msg)){
         messagesView.display(MsgList.getPage(0,10));
@@ -485,10 +485,9 @@ function showUsers(){
     usersView.display(userList.users);
 }
 
-console.log(MsgList.edit('1', 'привет'));
-console.log(addMessage({ text: "1" }));
-console.log(addMessage({ id: '1', text: "1" }));
-console.log(removeMessage(10));
+console.log(addMessage('привет'));
+console.log(editMessage('1', 'привет'));
+console.log(removeMessage('10'));
 setCurrentUser(user);
 showMessages(0, 10);
 showUsers();
