@@ -1,8 +1,8 @@
 "use strict";
 const user = 'Fresh-aku';
 class Message{
-    constructor(text,to, id = null, createdAt = null, author = null, isPersonal = null){
-        this._id =id;
+    constructor(text = '',to = null, id = null, createdAt = null, author = null, isPersonal = null){
+        this._id = id;
         this.text = text;
         this._createdAt = createdAt || new Date();
         this._author = author || this.user;
@@ -47,6 +47,14 @@ class MessageList{
         this._user = user;
     }
 
+    static validate(msg){
+        if (typeof (msg.text) === 'string' && (msg.text.length) <= 200 && typeof (msg.isPersonal) === 'boolean' && (typeof (msg.to) === 'string' || typeof (msg.to) === 'undefined')){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     static _filterObj = {
         author: (item, author) => !author || item.author.toLowerCase().includes(author.toLowerCase()),
         text: (item, text) => !text || item.text.toLowerCase().includes(text.toLowerCase()),
@@ -84,17 +92,24 @@ class MessageList{
             msg.id = `${+new Date()}`;
             msg.createdAt = new Date();
             msg.author = user;
-            messages.push(msg);
+            this._messages.push(msg);
             return true;
         }
         return false;
     }
 
     edit(id, msg){
-        let index = this._messages.findIndex(message => message.id == id);
-        if (this._user && MessageList.validate(msg)){
-            this._messages[index].text = msg;
-            return true;
+        
+        let index = this._messages.find(message => message.id === id);
+        // let newMsg = new Message({
+        //     id: msg.id, text: msg.text, createdAt: msg.createdAt, author: msg.author, isPersonal: msg.isPersonal
+        //   });
+        if (this._user){
+            if(MessageList.validate(msg)){
+                index.text = msg.text;
+                return true;
+            }
+            return false;
         }
         return false;
     }
@@ -108,14 +123,6 @@ class MessageList{
                 this._messages.splice(index, 1);
                 return true;         
             }
-        }
-    }
-
-    static validate(message){
-        if (typeof(message.id && message.text && message.author) === 'string' && message.text.length <= 200 && typeof (message.createdAt) === 'object' && typeof (message.isPersonal) === 'boolean' && (typeof (message.to) === 'string' || typeof (message.to) === 'undefined')){
-            return true;
-        }else{
-            return false;
         }
     }
 
@@ -437,21 +444,37 @@ function setCurrentUser(user){
 }
 
 function addMessage(msg){
+    // MsgList.user = user;
+    // if (MsgList.add(msg)) {
+    //     const newMsg = MsgList.msgs.slice(-1)[0];
+    //     messagesView.addMessage(newMsg, MsgList.user);
+    //     return true;
+    //   }
+    //   return false;
     MsgList.user = user;
-    MsgList.add(msg);
-    messagesView.display(MsgList.getPage(0,10));
+    if(MsgList.add(msg)){
+        messagesView.display(MsgList.getPage(0,10));
+        return true;
+    }
+    return false;
 }
 
 function editMessage(id, msg){
     MsgList.user = user;
-    MsgList.edit(id, msg);
-    messagesView.display(MsgList.getPage(0,10));
+    if(MsgList.edit(id, msg)){
+        messagesView.display(MsgList.getPage(0,10));
+        return true;
+    }
+    return false;
 }
 
 function removeMessage(id){
     MsgList.user = user;
-    MsgList. remove(id);
-    messagesView.display(MsgList.getPage(0,10));
+    if(MsgList. remove(id)){
+        messagesView.display(MsgList.getPage(0,10));
+        return true;
+    } 
+    return false;
 }
 
 function showMessages(skip = 0, top = 10, filterConfig = {}){
@@ -462,7 +485,10 @@ function showUsers(){
     usersView.display(userList.users);
 }
 
-
+console.log(MsgList.edit('1', 'привет'));
+console.log(addMessage({ text: "1" }));
+console.log(addMessage({ id: '1', text: "1" }));
+console.log(removeMessage(10));
 setCurrentUser(user);
 showMessages(0, 10);
 showUsers();
