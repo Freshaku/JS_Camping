@@ -462,6 +462,9 @@ function showUsers(){
     usersView.display(userList.users);
 }
 
+class chatController{
+    
+}
 
 setCurrentUser(user);
 showMessages(0, 10);
