@@ -285,6 +285,7 @@ input::-moz-placeholder{
     width: 20%;
     height: 36.5rem;
     border-radius: 0 0 2.4rem 0;
+    overflow: auto;
 }
 
 .users{
@@ -521,6 +522,7 @@ input::-moz-placeholder{
     align-items: center;
     font-size: 16px;
     margin-bottom: 1%;
+    margin-top: 3%;
 }
 
 .btn-login:hover{
@@ -542,4 +544,16 @@ input::-moz-placeholder{
 .another-page:hover{
     cursor: pointer;
     text-decoration: underline;
+}
+
+.error{
+    color: #EF766C;
+    margin-left: 3.5rem;
+}
+
+.errorF{
+    color: #EF766C;
+    margin-left: 2rem;
+    margin-top: -1rem;
+    margin-bottom: 1rem;
 }
