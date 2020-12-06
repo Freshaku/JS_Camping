@@ -118,7 +118,6 @@ class MessageList{
     }
 
     add(msg){
-        debugger;
         const newMsg = new Message(
             msg,
             false,
@@ -150,14 +149,10 @@ class MessageList{
     }
 
     remove(id){
-        let index = this._messages.findIndex(message => message.id === id);
+        let index = this._messages.find(message => message.id === id);
         if (this._user){
-            if(index === -1){
-                return false;       
-            }else{
-                this._messages.splice(index, 1);
-                return true;         
-            }
+            this._messages.splice(index, 1);
+            return true;         
         }
     }
 
@@ -172,9 +167,8 @@ class MessageList{
 
     restore(){
         const items = localStorage.getItem('messages');
-        this.clear();
+        this.clear;
         this.addAll(JSON.parse(items));
-     
     } 
 }
 
@@ -253,7 +247,7 @@ class MessagesView{
         const messages = document.getElementById(this.containerId);
         messages.innerHTML = msg.map((msg) => this.getMsg(msg)).join("");
     }
-    getMsg(msg, text, _author, _createdAt,to){
+    getMsg(msg,id, text, _author, _createdAt){
         if(msg._author !== currentUser){
             return `
                 <div class="others">
@@ -273,10 +267,11 @@ class MessagesView{
             return `
                 <div class="mine">
                     <div class="message my-message">
+                        <p class="visible-id-hidden">${msg.id}</p>     
                         <div class="edit-message">
                             <div class="edit-btn">
-                                <button type="button" class="editt-btn" onclick="editMessage()"><img src="img/edit-outlined.svg" alt="edit-outlined" id="edit-btn" class="mine-edit-btn-item"></button>
-                                <button type="button" class="delete-btn" onclick="deleteMessage()"><img src="img/trash.svg" alt="trash" id="delete-btn" class="mine-edit-btn-item"></button>
+                                <button type="button" class="editt-btn edit-remove-btns" onclick="editMessage()"><img src="img/edit-outlined.svg" alt="edit-outlined" id="edit-btn" class="mine-edit-btn-item"></button>
+                                <button type="button" class="delete-btn edit-remove-btns" onclick="deleteMessage()"><img src="img/trash.svg" alt="trash" id="delete-btn" class="mine-edit-btn-item"></button>
                             </div>
                             <div class="message-container mine-message-container">
                                 <p class="text-message">${msg.text}</p>
@@ -360,7 +355,7 @@ class ChatController{
     
     removeMessage(id){
         this.msgList.user = currentUser;
-        if(this.msgList. remove(id)){
+        if(this.msgList.remove(id)){
             this.messagesView.display(this.msgList.getPage(0,10));
             return true;
         } 
@@ -470,11 +465,10 @@ function findByFilter(){
 }
 
 function sendPrivateMsg(){
-    debugger;  
     const toUser = document.querySelector('.name-of-chat');
-    chatController.addMessage(writeMsg.value, true, toUser.value); 
-    writeMsg.value = '';   
-    const privatContainer = document.querySelector('.mine-message-container'); 
+    chatController.addMessage(writeMsg.value, true, toUser.textContent); 
+    writeMsg.value = '';    
+    const privatContainer = document.querySelector('.mine-message-container');
     privatContainer.style.border = "1px solid red";
 }
 
@@ -485,15 +479,19 @@ function sendMsg(){
 
 function editMessage(id){
     debugger;
+    const messageId =  document.querySelector('.visible-id-hidden'); 
+    const partId = messageId.textContent;
     const message = document.querySelector('.text-message');
     writeMsg.value = message.textContent;
-    chatController.editMessage(id, writeMsg.value);
+    chatController.editMessage(partId, writeMsg.value);
     writeMsg.value = '';   
 }
 
-function deleteMessage(id){
+function deleteMessage(){
     debugger;
-    chatController.removeMessage(id);
+    const message =  document.querySelector('.visible-id-hidden'); 
+    const partId = message.textContent;
+    chatController.removeMessage(partId);
 }
 
 

@@ -567,3 +567,16 @@ input::-moz-placeholder{
 #mess-hide{
     width: 100%;
 }
+
+.visible-id-hidden{
+    display: none;
+}
+
+.edit-remove-btns{
+    border: none;
+    background-color: white;
+}
+
+.edit-remove-btns{
+    cursor: pointer;
+}
