@@ -1,5 +1,5 @@
 "use strict";
-let user = '';
+let currentUser = undefined;
 class Message{
     constructor(text = '',to = null, id = null, createdAt = null, author = null, isPersonal = null){
         this._id =id;
@@ -44,7 +44,7 @@ class MessageList{
 
     constructor(messages){
         this._messages = messages.slice();
-        this._user = user;
+        this._user = currentUser;
         this.restore(messages);
     }
 
@@ -104,15 +104,12 @@ class MessageList{
     }
 
     getPage(skip = 0, top = 10, filterConfig = {}){
-        let result = this._messages.slice();
+        let result =this._messages.slice(-10);
         Object.keys(filterConfig).forEach((key) => {
             result = result.filter((item) =>  MessageList._filterObj[key](item, filterConfig[key]));
         });
         result.sort((a, b) => a.createdAt - b.createdAt);
-        result.splice(0, skip);
-        if (result.length > top){
-            result.splice(top);
-        }
+        result.slice(skip, skip + top);
         return result;
     }
 
@@ -121,15 +118,13 @@ class MessageList{
     }
 
     add(msg){
-        if (!this._user){
-            return false;
-        }
+        debugger;
         const newMsg = new Message(
             msg,
             false,
             `${+new Date()}`,
             new Date(),
-            user,
+            currentUser,
         );
         if (MessageList.validate(newMsg)) {
             this._messages.push(newMsg);
@@ -179,6 +174,7 @@ class MessageList{
         const items = localStorage.getItem('messages');
         this.clear();
         this.addAll(JSON.parse(items));
+     
     } 
 }
 
@@ -258,7 +254,7 @@ class MessagesView{
         messages.innerHTML = msg.map((msg) => this.getMsg(msg)).join("");
     }
     getMsg(msg, text, _author, _createdAt,to){
-        if(msg._author !== user){
+        if(msg._author !== currentUser){
             return `
                 <div class="others">
                     <div class="message">
@@ -268,7 +264,7 @@ class MessagesView{
                             </div>
                         </div>
                         <div class="name-of-author">
-                            <p class="text-name-of-author">${msg._author}  ${msg._createdAt}</p>
+                            <p class="text-name-of-author">${msg._author}  ${msg._createdAt.toLocaleString()}</p>
                         </div>
                     </div>
                 </div>
@@ -276,18 +272,18 @@ class MessagesView{
         } else{
             return `
                 <div class="mine">
-                    <div class="message">
+                    <div class="message my-message">
                         <div class="edit-message">
                             <div class="edit-btn">
-                                <a href="#"><img src="img/edit-outlined.svg" alt="edit-outlined" id="edit-btn" class="mine-edit-btn-item"></a>
-                                <a href="#"><img src="img/trash.svg" alt="trash" id="delete-btn" class="mine-edit-btn-item"></a>
+                                <button type="button" class="editt-btn" onclick="editMessage()"><img src="img/edit-outlined.svg" alt="edit-outlined" id="edit-btn" class="mine-edit-btn-item"></button>
+                                <button type="button" class="delete-btn" onclick="deleteMessage()"><img src="img/trash.svg" alt="trash" id="delete-btn" class="mine-edit-btn-item"></button>
                             </div>
                             <div class="message-container mine-message-container">
                                 <p class="text-message">${msg.text}</p>
                             </div>
                         </div>
                         <div class="name-of-author mine-name-of-author">
-                            <p class="text-name-of-author">${msg._author}  ${msg._createdAt}</p>
+                            <p class="text-name-of-author">${msg._author}  ${msg._createdAt.toLocaleString()}</p>
                         </div>
                     </div>
                 </div>
@@ -307,20 +303,20 @@ class UsersView{
         if(name !== activeF && name !== activeS){
             if(name === chatF || name === chatS){
                 return `
-                <div class="users">
+                <div class="users" onclick="sendPrivateMsg()">
                 <p class="name-of-chat">${name}<img src="img/chat_icon.svg" alt="chat-icon" class="chat-icon"></p>
                 </div>
                 `;
             }else{
                 return `
-                <div class="users">
+                <div class="users" onclick="sendPrivateMsg()">
                     <p class="name-of-chat">${name}</p>
                 </div>
             `;
             }
         }else{
             return `
-            <div class="users">
+            <div class="users" onclick="sendPrivateMsg()">
                 <p class="name-of-chat">${name}</p>
                 <div class="online-icon"></div>
             </div>
@@ -339,12 +335,13 @@ class ChatController{
     }
 
     setCurrentUser(user){
+        currentUser = user;
         this.msgList.user = user;
         this.headerView.display(user);
     }
     
     addMessage(msg){
-        this.msgList.user = user;
+        this.msgList.user = currentUser;
         if(this.msgList.add(msg)){
             this.messagesView.display(this.msgList.getPage(0,10));
             return true;
@@ -353,7 +350,7 @@ class ChatController{
     }
     
     editMessage(id, msg){
-        this.msgList.user = user;
+        this.msgList.user = currentUser;
         if(this.msgList.edit(id, msg)){
             this.messagesView.display(this.msgList.getPage(0,10));
             return true;
@@ -362,7 +359,7 @@ class ChatController{
     }
     
     removeMessage(id){
-        this.msgList.user = user;
+        this.msgList.user = currentUser;
         if(this.msgList. remove(id)){
             this.messagesView.display(this.msgList.getPage(0,10));
             return true;
@@ -384,16 +381,14 @@ class ChatController{
         signIn.style.display="none";
         logIn.style.display="none";
         main.style.display="block";
-        writeMsg.style.display="none";
-        btnSend.style.display="none";
+        hide.style.display="none";
     }
 
     mainPage(){
         signIn.style.display="none";
         logIn.style.display="none";
         main.style.display="block";
-        writeMsg.style.display="block";
-        btnSend.style.display="flex";
+        hide.style.display="flex";
     }
 
     loginP(){
@@ -413,7 +408,7 @@ function signInPage(){
     chatController.signinP();
     formSignIn.onsubmit = function(event) {
         event.preventDefault();
-        const hasUser = chatController.userList.users.find((login) => login === nameSignIn.value);
+        const hasUser = chatController.userList.users.find((login) => login == nameSignIn.value);
         if(hasUser){ 
             chatController.mainPage();
             chatController.setCurrentUser(nameSignIn.value);
@@ -451,42 +446,57 @@ function exitF(){
 
 function loadMoreMsgs(){
     debugger;
-    if (chatController.msgList._messages.length > 10) {
-        chatController.showMessages(0, 10);
+    if(chatController.msgList._messages.length > 10){
+        chatController.showMessages(10, 10);
     }
 }
 
 function findByFilter(){
-    if(findName){
-        chatController.author = findName.value;
-        chatController.showMessages();
-    }
-    if(findText){
-        chatController.text = findText.value;
-        chatController.showMessages();
-    }
-    if(findDate){
-        chatController.dateFrom = findDate.value;
-        chatController.showMessages();
-    }
-    if(findName.value !== chatController.author || findText.value !== chatController.text || findDate.value !== chatController.dateFrom || findName.value === "" || findText.value === ""){
+    debugger;
+    event.preventDefault();
+    const obj = {
+        author: findName.value,
+        text: findText.value,
+        dateFrom: findDate.value,
+    };
+    const filters = obj;
+    chatController.showMessages(0, 10, filters);
+    findName.value = '';
+    findText.value = '';
+    findDate.value = '';
+    if (findName.value !== chatController.author || findText.value !== chatController.text || findDate.value !== chatController.dateFrom) {
         errorF.textContent = "Oops! Message not found!"
     }
 }
 
+function sendPrivateMsg(){
+    debugger;  
+    const toUser = document.querySelector('.name-of-chat');
+    chatController.addMessage(writeMsg.value, true, toUser.value); 
+    writeMsg.value = '';   
+    const privatContainer = document.querySelector('.mine-message-container'); 
+    privatContainer.style.border = "1px solid red";
+}
+
+function sendMsg(){
+    chatController.addMessage(writeMsg.value); 
+    writeMsg.value = '';      
+}
+
 function editMessage(id){
+    debugger;
+    const message = document.querySelector('.text-message');
+    writeMsg.value = message.textContent;
     chatController.editMessage(id, writeMsg.value);
+    writeMsg.value = '';   
 }
 
 function deleteMessage(id){
+    debugger;
     chatController.removeMessage(id);
 }
 
 
-function sendMsg(){
-    chatController.addMessage(writeMsg.value,false)
-    writeMsg.value = ""
-}
 
 const signIn = document.getElementById('signin-page');
 const formSignIn = document.getElementById('formsignin');
@@ -519,28 +529,27 @@ const findDate = document.getElementById('date');
 const findText = document.getElementById('text');
 const findBtn = document.getElementById('find-btn');
 
-const editBtn = document.getElementById('edit-btn');
-const deleteBtn = document.getElementById('delete-btn');
+
 
 const loadMore = document.getElementById('load-more-btn');
 
-// const privetMsg;
 
 const writeMsg = document.getElementById('write');
-const btnSend = document.getElementById('send-msg-btn');;
+const btnSend = document.getElementById('send-msg-btn');
+const hide = document.getElementById('mess-hide')
 
 const messages = [
     new Message(
         'Привет, как у вас успехи с домашкой?)',
+        false,
         '1',
-        false,    
         new Date('2020-10-09T11:44:00'),
         'Artem', 
     ),
     new Message(
         'Привет!',
-        '2',
         false,
+        '2',
         new Date('2020-10-09T11:54:00'),
         'Lera',
     ),
@@ -554,127 +563,127 @@ const messages = [
     ),
     new Message(
         'Все довольно таки не плохо, но требует времени)',
-        '4',
         false,
+        '4',
         new Date('2020-10-09T12:01:00'),
         'Fresh-aku',
     ),
     new Message(
         'Так что работаем ребята:)',
-        '5',
         false,
+        '5',
         new Date('2020-10-09T12:05:00'),
         'Anton',
     ),
     new Message(
         'хах, это точно',
-        '6',
         false,
+        '6',
         new Date('2020-10-09T12:06:00'),
         'Fresh-aku',
     ),
     new Message(
         'А вообще у кого какие планы на выходные? Может собиремся вместе где-нибудь и вместе порешаем интересные задачки?)',
-        '7',
         false,
+        '7',
         new Date('2020-10-09T12:07:00'),
         'Artem',
     ),
     new Message(
         'Хорошая идея, я за!',
-        '8',
         false,
+        '8',
         new Date('2020-10-09T12:10:00'),
         'Lera',
     ),
     new Message(
         'и я)',
-        '9',
         false,
+        '9',
         new Date('2020-10-09T12:11:00'),
         'Fresh-aku',
     ),
     new Message(
         'я за любой движ)',
-        '10',
         false,
+        '10',
         new Date('2020-10-09T12:15:00'),
         'Anton',
     ),
     new Message(
         'я за!',
-        '11',
         false,
+        '11',
         new Date('2020-10-09T12:16:00'),
         'Lena',
     ),
     new Message(
         'Круто, тогда договорились! Может есть какие-нибудь предложения на счет места?',
-        '12',
         false,
+        '12',
         new Date('2020-10-09T12:20:00'),
         'Artem',
     ),
     new Message(
         'О, я знаю одну крутую кафешку.',
-        '13',
         false,
+        '13',
         new Date('2020-10-09T12:25:00'),
         'Lera',
     ),
     new Message(
         'Там очень отмасферно и удобные диваны. Там даже есть гамак и качели. А еще там очень вкусный кофе. Прям сейчас бы туда сгоняла. ',
-        '14',
         false,
+        '14',
         new Date('2020-10-09T12:26:00'),
         'Lera',
     ),
     new Message(
         'ооо, звучит очень даже неплохо',
-        '15',
         false,
+        '15',
         new Date('2020-10-09T12:27:00'),
         'Lena',
     ),
     new Message(
         'ахаххаха, и правда, теперь я хочу на качели:)',
-        '16',
         false,
+        '16',
         new Date('2020-10-09T12:28:00'),
         'Fresh-aku',
     ),
     new Message(
         'Супер, тогда погнали в понедельник в часика 2?',
-        '17',
         false,
+        '17',
         new Date('2020-10-09T12:30:00'),
         'Artem',
     ),
     new Message(
         'Окей',
-        '18',
         false,
+        '18',
         new Date('2020-10-09T12:31:00'),
         'Lera',
     ),
     new Message(
         'Да, давайте.',
-        '19',
         false,
+        '19',
         new Date('2020-10-09T12:32:00'),
         'Anton',
     ),
     new Message(
         'Хорошо',
-        '20',
         false,
+        '20',
         new Date('2020-10-09T12:31:00'),
         'Lena',
     ),
     new Message(
         'До завтра)',
-        '21',
         false,
+        '21',
         new Date('2020-10-09T12:31:00'),
         'Fresh-aku',
     )
@@ -699,11 +708,11 @@ btnToSignIn.addEventListener('click', () =>{signInPage()});
 toSignIn.addEventListener('click', () =>{signInPage()});
 toLogIn.addEventListener('click', () =>{logInPage()});
 exit.addEventListener('click', () =>{exitF()});
+
 btnSend.addEventListener('click', () =>{sendMsg()});
 loadMore.addEventListener('click', () =>{loadMoreMsgs()});
 findBtn.addEventListener('click', () =>{findByFilter()});
-// editBtn.addEventListener('click', () =>{editMessage()});
-// deleteBtn.addEventListener('click', () =>{deleteMessge()});
+
 
 
 

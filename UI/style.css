@@ -32,6 +32,12 @@ textarea:focus {
     outline: none;
 }
 
+button, 
+button:active, 
+button:focus {
+    outline: none;
+}
+
 /* header */
 
 .header{
@@ -556,4 +562,8 @@ input::-moz-placeholder{
     margin-left: 2rem;
     margin-top: -1rem;
     margin-bottom: 1rem;
+}
+
+#mess-hide{
+    width: 100%;
 }
