@@ -152,6 +152,7 @@ class MessageList{
         let index = this._messages.find(message => message.id === id);
         if (this._user){
             this._messages.splice(index, 1);
+            this.save();
             return true;         
         }
     }
@@ -165,10 +166,10 @@ class MessageList{
         localStorage.setItem('messages', JSON.stringify(this._messages));
     }
 
-    restore(){
+    restore(msg){
         const items = localStorage.getItem('messages');
         this.clear;
-        this.addAll(JSON.parse(items));
+        this.addAll(JSON.parse(items) || msg);
     } 
 }
 
