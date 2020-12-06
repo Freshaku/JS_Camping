@@ -278,6 +278,7 @@ let ModuleMessages = (function() {
     // функция удаления сообщения
 
     function removeMessage(id){
+        debugger;
         let index = messages.findIndex(msg => msg.id === id);
         if(index === -1){
             return false;       

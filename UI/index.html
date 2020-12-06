@@ -9,14 +9,40 @@
 </head>
 <body>
     <div class="container">
+        <!-- HEADER -->
         <header class="header">
             <h1 class="logo">TextMe</h1>
             <nav class="nav-on-pages">
                 <a href="#" class="nav-item" id="main-user"></a>
-                <a href="#" class="nav-item">Exit</a>
+                <a href="#" class="nav-item" id="btn-to-signin">Sign In</a>
+                <a href="#" class="nav-item" id="exit">Exit</a>
             </nav>
         </header>
-        <main class="main">
+        <!-- LOGIN -->
+        <div class="login" id="login-page">
+            <form action="" name="login" id="formlogin" class="login-form">
+                <p class="title-login">Log in</p>
+                <input id="namelog" class="login-input" type="text" placeholder="Login">
+                <input id="passlog" class="login-input" type="password" placeholder="Password">
+                <input id="rpasslog" class="login-input" type="password" placeholder="Confirm the password">
+                <p id="errorL" class="error"></p>
+                <button type="submit" class="btn-login" id="btn-login">Log in</button>
+                <p class="another"><a href="#" class="another-page" id="to-signin">Sign in</a> &nbsp; or &nbsp;<a href="#" class="another-page" id="to-mainl">Main page</a></p>
+            </form>
+        </div>
+        <!-- SIGNIN -->
+        <div class="signin" id="signin-page">
+            <form action="" name="login" id="formsignin" class="login-form">
+                <p class="title-login">Sign in</p>
+                <input id="namesig" class="login-input" type="text" placeholder="Login">
+                <input id="passsign" class="login-input" type="password" placeholder="Password">
+                <p id="errorS" class="error"></p>
+                <button type="submit" class="btn-login" id="btn-sigin">Sign in</button>
+                <p class="another"><a href="#" class="another-page" id="to-login">Log in</a> &nbsp;or &nbsp;<a href="#" class="another-page" id="to-mains">Main page</a></p>
+            </form>
+        </div>
+        <!-- MAIN -->
+        <main class="main" id="main-chat">
             <div class="main-window-head">
                 <p class="name-column">Filter</p>
                 <p class="name-column">JS chat <img src="img/chat_icon.svg" alt="chat-icon"></p>
@@ -37,31 +63,36 @@
                             Text:
                             <input type="text" id="text" class="find-input" placeholder="Text">
                         </label>
-                        <button type="submit" class="submit-btn">Find</button>
+                        <p id="errorF" class="errorF"></p>
+                        <button type="submit" class="submit-btn" id="find-btn">Find</button>
                     </form>
                 </div>
                 <div class="center-side">
                     <div class="text-part">
-                        <button type="button" class="load-more-btn">Load more</button>
+                        <button type="button" class="load-more-btn" id="load-more-btn">Load more</button>
                         <div class="messages" id="messages">
                         </div>
                     </div>
                     <div class="type-part">
-                        <p class="typing-text"><textarea class="textarea-message" placeholder="Type a message..."></textarea></p>
-                        <button type="submit" class="send-btn">Send</button>
+                        <div id="mess-hide">
+                            <p class="typing-text" id="write-p"><textarea id="write" class="textarea-message" placeholder="Type a message..."></textarea></p>
+                        <button type="submit" class="send-btn" id="send-msg-btn">Send</button>
+                        </div>
+                        
                     </div>
                 </div>
                 <div class="left-side" id="users">
                 </div> 
             </div>
         </main>
+        <!-- FOOTER  -->
         <footer class="footer">
             <div class="author">
                 <p class="author-text">Akulenok Karina</p>
                 <a href="mailto:karina_akulenok@mail.ru" class="author-text author-link">karina_akulenok@mail.ru</a>
             </div>
             <p class="logo">TextMe</p>
-            <p class="date-was-made">22.10.2020</p>
+            <p class="date-was-made">07.12.2020</p>
         </footer>
     </div>
 </body>

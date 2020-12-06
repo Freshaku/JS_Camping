@@ -32,6 +32,12 @@ textarea:focus {
     outline: none;
 }
 
+button, 
+button:active, 
+button:focus {
+    outline: none;
+}
+
 /* header */
 
 .header{
@@ -182,29 +188,6 @@ input::-moz-placeholder{
     align-items: center;
 }
 
-/* .message-avatar{
-    display: flex;
-    align-content: flex-end;
-    margin-left: 1rem;
-    margin-right: 0.5em;
-}
-
-.circle{
-    position: relative;
-
-    width: 3rem;
-    height: 3rem;
-
-    border-radius: 50%;
-    border: 0.1rem solid #000;
-
-    background-position: center;
-    background-size: 100%;
-    background-origin: border-box;
-    background-repeat: no-repeat;
-    background-image: url(https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/grandma_elderly_nanny_avatar-512.png);
-} */
-
 .message-container{
     margin-left: 1rem;
     display: flex;
@@ -308,6 +291,7 @@ input::-moz-placeholder{
     width: 20%;
     height: 36.5rem;
     border-radius: 0 0 2.4rem 0;
+    overflow: auto;
 }
 
 .users{
@@ -481,4 +465,118 @@ input::-moz-placeholder{
     .textarea-message {
         width: 100%;
     }
+}
+
+/* LOGIN */
+
+.login{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signin{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form{
+    display: flex;
+    flex-direction: column;
+    width: 35rem;
+    height: 29rem;
+    background-color: #FFF;
+    border-radius: 2.4rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.title-login{
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 2.5rem;
+}
+
+.login-input{
+    background: rgba(242, 203, 194, 0.75);
+    border-radius: 1.4rem;
+    margin-left: 3.5rem;
+    margin-right: 3.5rem;
+    width: 27rem;
+    height: 3rem;
+    border: none;
+    padding: 1.4rem;
+    margin-bottom: 2.5rem;
+}
+
+.btn-login{
+    background: #F9B7B1;
+    border-radius: 1.4rem;
+    margin-left: 6.3rem;
+    margin-right: 6.3rem;
+    width: 22rem;
+    height: 3rem;
+    border: none;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 1%;
+    margin-top: 3%;
+}
+
+.btn-login:hover{
+    cursor: pointer;
+    background: #FF9A90;
+}
+
+.another{
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+}
+
+.another-page{
+    color: #000000;
+    text-decoration: none;
+}
+
+.another-page:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.error{
+    color: #EF766C;
+    margin-left: 3.5rem;
+}
+
+.errorF{
+    color: #EF766C;
+    margin-left: 2rem;
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+}
+
+#mess-hide{
+    width: 100%;
+}
+
+.visible-id-hidden{
+    display: none;
+}
+
+.edit-remove-btns{
+    border: none;
+    background-color: white;
+}
+
+.edit-remove-btns{
+    cursor: pointer;
 }
