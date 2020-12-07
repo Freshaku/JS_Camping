@@ -104,12 +104,15 @@ class MessageList{
     }
 
     getPage(skip = 0, top = 10, filterConfig = {}){
-        let result =this._messages.slice(-10);
+        let result =this._messages.slice();
         Object.keys(filterConfig).forEach((key) => {
             result = result.filter((item) =>  MessageList._filterObj[key](item, filterConfig[key]));
         });
         result.sort((a, b) => a.createdAt - b.createdAt);
-        result.slice(skip, skip + top);
+        result.splice(0, skip);
+        if (result.length > top) {
+            result.splice(top);
+        }
         return result;
     }
 
@@ -149,8 +152,10 @@ class MessageList{
     }
 
     remove(id){
-        let index = this._messages.find(message => message.id === id);
-        if (this._user){
+        let index = this._messages.findIndex(msg => msg.id === id);
+        if(index === -1){
+            return false;       
+        }else{
             this._messages.splice(index, 1);
             this.save();
             return true;         
@@ -168,8 +173,8 @@ class MessageList{
 
     restore(msg){
         const items = localStorage.getItem('messages');
-        this.clear;
-        this.addAll(JSON.parse(items) || msg);
+        if(this._messages === [])
+        {this.addAll(JSON.parse(items) || msg);}
     } 
 }
 
@@ -197,17 +202,17 @@ class UserList{
     }
 
     addUser(user) {
-        this.users.push(user);
+        this._users.push(user);
         this.save();
      }
 
     save(){
-        localStorage.setItem('users', JSON.stringify(this.users));
+        localStorage.setItem('allUsers', JSON.stringify(this.users));
     }
 
-    restore() {
-        const items = localStorage.getItem('users');
-        this.users = (JSON.parse(items));
+    restore(users) {
+        const items = localStorage.getItem('allUsers');
+        this.users = (JSON.parse(items) || users);
     }
 }
 
@@ -248,7 +253,7 @@ class MessagesView{
         const messages = document.getElementById(this.containerId);
         messages.innerHTML = msg.map((msg) => this.getMsg(msg)).join("");
     }
-    getMsg(msg,id, text, _author, _createdAt){
+    getMsg(msg,_id, text, _author, _createdAt){
         if(msg._author !== currentUser){
             return `
                 <div class="others">
@@ -275,7 +280,7 @@ class MessagesView{
                                 <button type="button" class="delete-btn edit-remove-btns" onclick="deleteMessage()"><img src="img/trash.svg" alt="trash" id="delete-btn" class="mine-edit-btn-item"></button>
                             </div>
                             <div class="message-container mine-message-container">
-                                <p class="text-message">${msg.text}</p>
+                                <p class="text-message my-txt-msg">${msg.text}</p>
                             </div>
                         </div>
                         <div class="name-of-author mine-name-of-author">
@@ -363,7 +368,7 @@ class ChatController{
         return false;
     }
     
-    showMessages(skip = 0, top = 10, filterConfig = {}){
+    showMessages(skip = 15, top = 10, filterConfig = {}){
         this.messagesView.display(this.msgList.getPage(skip, top, filterConfig));
     }
     
@@ -373,19 +378,7 @@ class ChatController{
         this.userList.save();
     }
 
-    mainPageNoLogIn(){
-        signIn.style.display="none";
-        logIn.style.display="none";
-        main.style.display="block";
-        hide.style.display="none";
-    }
-
-    mainPage(){
-        signIn.style.display="none";
-        logIn.style.display="none";
-        main.style.display="block";
-        hide.style.display="flex";
-    }
+    
 
     loginP(){
         logIn.style.display="flex";
@@ -400,13 +393,27 @@ class ChatController{
 
 }
 
+function mainPageNoLogIn(){
+    signIn.style.display="none";
+    logIn.style.display="none";
+    main.style.display="block";
+    hide.style.display="none";
+}
+
+function mainPage(){
+    signIn.style.display="none";
+    logIn.style.display="none";
+    main.style.display="block";
+    hide.style.display="flex";
+}
+
 function signInPage(){
     chatController.signinP();
     formSignIn.onsubmit = function(event) {
         event.preventDefault();
         const hasUser = chatController.userList.users.find((login) => login == nameSignIn.value);
         if(hasUser){ 
-            chatController.mainPage();
+            mainPage();
             chatController.setCurrentUser(nameSignIn.value);
             btnToSignIn.style.display="none";
             if(passS.value === ''){
@@ -424,7 +431,7 @@ function logInPage(){
         if(newUser){
             if (passL.value === rPassL.value && passL.value !== ''){
                 chatController.userList.addUser(newUser);
-                chatController.mainPage();
+                mainPage();
                 chatController.setCurrentUser(nameLogin.value);
                 btnToSignIn.style.display="none";
             }else{
@@ -443,7 +450,7 @@ function exitF(){
 function loadMoreMsgs(){
     debugger;
     if(chatController.msgList._messages.length > 10){
-        chatController.showMessages(10, 10);
+        chatController.showMessages(0, 10);
     }
 }
 
@@ -471,30 +478,41 @@ function sendPrivateMsg(){
     writeMsg.value = '';    
     const privatContainer = document.querySelector('.mine-message-container');
     privatContainer.style.border = "1px solid red";
+    chatController.showMessages(15, 10);
 }
 
 function sendMsg(){
     chatController.addMessage(writeMsg.value); 
+    chatController.showMessages(15, 10);
     writeMsg.value = '';      
 }
 
-function editMessage(id){
+function findId() {
+    const messages = document.querySelectorAll('.my-message');
+    const newArr = [...messages];
+    const target = event.target;
+    const msgContainer = target.closest('.my-message');
+    let comeMsg = chatController.msgList.getPage(0, chatController.msgList._messages.length, {author: chatController.msgList.user});
+    const index = newArr.indexOf(msgContainer);
+    return comeMsg[index].id;
+}
+
+function editMessage(){
     debugger;
-    const messageId =  document.querySelector('.visible-id-hidden'); 
-    const partId = messageId.textContent;
-    const message = document.querySelector('.text-message');
+    const newMId = findId();
+    const message = document.querySelector('.my-txt-msg');
     writeMsg.value = message.textContent;
-    chatController.editMessage(partId, writeMsg.value);
-    writeMsg.value = '';   
+    chatController.editMessage(newMId, writeMsg.value);
+    chatController.showMessages(15, 10);
+    // writeMsg.value = ''; 
 }
 
 function deleteMessage(){
     debugger;
-    const message =  document.querySelector('.visible-id-hidden'); 
-    const partId = message.textContent;
-    chatController.removeMessage(partId);
+    const newMsgId = findId();
+    chatController.removeMessage(newMsgId);
+    chatController.showMessages(15, 10);
 }
-
 
 
 const signIn = document.getElementById('signin-page');
@@ -698,9 +716,9 @@ const activeS = 'Lera';
 const chatController = new ChatController(messages, users, activeUsers);
 chatController.showUsers();
 chatController.showMessages();
-chatController.mainPageNoLogIn();
-toMainS.addEventListener('click', () =>{chatController.mainPageNoLogIn()});
-toMainL.addEventListener('click', () =>{chatController.mainPageNoLogIn()});
+mainPageNoLogIn();
+toMainS.addEventListener('click', () =>{mainPageNoLogIn()});
+toMainL.addEventListener('click', () =>{mainPageNoLogIn()});
 btnToSignIn.addEventListener('click', () =>{signInPage()});
 toLogIn.addEventListener('click', () =>{logInPage()});
 btnToSignIn.addEventListener('click', () =>{signInPage()});
