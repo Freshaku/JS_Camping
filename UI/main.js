@@ -1,5 +1,175 @@
 "use strict";
 let currentUser = undefined;
+
+class  ChatApiService{
+    constructor() {
+        this._token = localStorage.getItem('token');  
+    }
+
+    async getPage(skip = 0, top = 10, filterConfig = {}){
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${this._token}`);
+
+        const requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+        };
+        
+        const resp = await fetch(`https://jslabdb.datamola.com/messages?skip=${skip}&top=${top}`, requestOptions)
+        .then(response => response.json())
+        .then(result => result)
+        .catch(error => console.log('error', error));
+
+        return resp;
+    }
+
+    async addMsg({ text, isPersonal, to, author }){
+        const myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${this._token}`);
+        myHeaders.append('Content-Type', 'application/json');
+        const raw = {text, isPersonal, to, author};
+
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow',
+        };
+      
+        const resp = await fetch("https://jslabdb.datamola.com/messages", requestOptions)
+            .then((response) => {
+                if (response.statusText !== 'OK') {
+                    response = errorP();
+                }
+            })
+            .catch((error) => console.log('error', error));
+
+            return resp;
+    }
+
+    async editMessage() {
+    
+        const myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${this._token}`);
+        myHeaders.append('Content-Type', 'application/json');
+        const raw = {text, isPersonal, to, author};
+    
+        const requestOptions = {
+          method: 'PUT',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow',
+        };
+    
+        const resp = await fetch("https://jslabdb.datamola.com/messages/", requestOptions)
+        .then((response) => {
+            if (response.statusText !== 'OK') {
+                response = errorP();
+            }
+        })
+        .catch((error) => console.log('error', error));
+
+        return resp;
+    } 
+    
+    async deleteMsg() {
+        const myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${this._token}`);
+    
+        const requestOptions = {
+          method: 'DELETE',
+          headers: myHeaders,
+          redirect: 'follow',
+        };
+    
+        const resp = await fetch("https://jslabdb.datamola.com/messages/", requestOptions)
+        .then((response) => {
+            if (response.statusText !== 'OK') {
+                response = errorP();
+            }
+        })
+        .then((result) => console.log(result))
+        .catch((error) => console.log('error', error));
+
+        return resp;
+    }
+
+    async logOut() {
+        const myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${this._token}`);
+        myHeaders.append('Content-Length', 0);
+    
+        const requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          redirect: 'follow',
+        };
+    
+        const resp = await fetch("https://jslabdb.datamola.com/auth/logout", requestOptions)
+          .then((response) => response.text())
+          .then((result) => result)
+          .catch((error) => console.log('error', error));
+
+          return resp;
+    }
+
+    async getUsers() {
+        const myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${this._token}`);
+    
+        const requestOptions = {
+          method: 'GET',
+          headers: myHeaders,
+          redirect: 'follow',
+        };
+    
+        const resp = await fetch("https://jslabdb.datamola.com/users", requestOptions)
+          .then((response) => response.json())
+          .then((result) => result)
+          .catch((error) => console.log('error', error));
+
+          return resp;
+    
+    }
+
+    async putSignIn(login, password) {
+        const formdata = new FormData();
+        formdata.append('name', login);
+        formdata.append('pass', password);
+    
+        const requestOptions = {
+          method: 'POST',
+          body: formdata,
+          redirect: 'follow',
+        };
+    
+        const resp = await fetch("https://jslabdb.datamola.com/auth/login", requestOptions)
+          .then((response) => response.json())
+          .then((result) => localStorage.setItem('token', result.token))
+          .catch((error) => console.log('error', error));
+
+          return resp;
+
+    }
+
+    async putLogIn(login, password) {
+        const formdata = new FormData();
+        formdata.append('name', login);
+        formdata.append('pass', password);
+    
+        const requestOptions = {
+          method: 'POST',
+          body: formdata,
+          redirect: 'follow',
+        };
+        const resp = await fetch("https://jslabdb.datamola.com/auth/register", requestOptions)
+          .then((response) => response.json())
+          .catch((error) => console.log('error', error));
+
+        return resp;
+    }
+}
 class Message{
     constructor(text = '',to = null, id = null, createdAt = null, author = null, isPersonal = null){
         this._id =id;
@@ -45,7 +215,7 @@ class MessageList{
     constructor(messages){
         this._messages = messages.slice();
         this._user = currentUser;
-        this.restore(messages);
+        // this.restore(messages);
     }
 
     addAll(messages){
@@ -137,7 +307,7 @@ class MessageList{
     }
 
     edit(id, msg){
-        let foundMsg = this._messages.find(message => message.id === id);
+        let foundMsg = this._messages.find(message => message.id == id);
         if (!this._user){
             return false;
         }
@@ -152,7 +322,7 @@ class MessageList{
     }
 
     remove(id){
-        let index = this._messages.findIndex(msg => msg.id === id);
+        let index = this._messages.findIndex(msg => msg.id == id);
         if(index === -1){
             return false;       
         }else{
@@ -171,18 +341,18 @@ class MessageList{
         localStorage.setItem('messages', JSON.stringify(this._messages));
     }
 
-    restore(msg){
-        const items = localStorage.getItem('messages');
-        if(this._messages === [])
-        {this.addAll(JSON.parse(items) || msg);}
-    } 
+    // restore(msg){
+    //     const items = localStorage.getItem('messages');
+    //     if(this._messages === [])
+    //     {this.addAll(JSON.parse(items) || msg);}
+    // } 
 }
 
 class UserList{
     constructor(users, activeUsers){
         this._users = users;
         this._activeUsers = activeUsers;
-        this.restore(users);
+        // this.restore(users);
     }
 
     get users(){
@@ -210,10 +380,10 @@ class UserList{
         localStorage.setItem('allUsers', JSON.stringify(this.users));
     }
 
-    restore(users) {
-        const items = localStorage.getItem('allUsers');
-        this.users = (JSON.parse(items) || users);
-    }
+    // restore(users) {
+    //     const items = localStorage.getItem('allUsers');
+    //     this.users = (JSON.parse(items) || users);
+    // }
 }
 
 class HeaderView{
@@ -276,8 +446,8 @@ class MessagesView{
                         <p class="visible-id-hidden">${msg.id}</p>     
                         <div class="edit-message">
                             <div class="edit-btn">
-                                <button type="button" class="editt-btn edit-remove-btns" onclick="editMessage()"><img src="img/edit-outlined.svg" alt="edit-outlined" id="edit-btn" class="mine-edit-btn-item"></button>
-                                <button type="button" class="delete-btn edit-remove-btns" onclick="deleteMessage()"><img src="img/trash.svg" alt="trash" id="delete-btn" class="mine-edit-btn-item"></button>
+                                <button type="button" class="editt-btn edit-remove-btns" onclick="editMessage(${msg.id}, '${msg.text}')"><img src="img/edit-outlined.svg" alt="edit-outlined" id="edit-btn" class="mine-edit-btn-item"></button>
+                                <button type="button" class="delete-btn edit-remove-btns" onclick="deleteMessage(${msg.id})"><img src="img/trash.svg" alt="trash" id="delete-btn" class="mine-edit-btn-item"></button>
                             </div>
                             <div class="message-container mine-message-container">
                                 <p class="text-message my-txt-msg">${msg.text}</p>
@@ -328,6 +498,7 @@ class UsersView{
 
 class ChatController{
     constructor(messages, users, activeUsers){
+        this.chatApi = new ChatApiService();
         this.msgList = new MessageList(messages);
         this.userList = new UserList(users, activeUsers); 
         this.headerView = new HeaderView('main-user');
@@ -342,6 +513,8 @@ class ChatController{
     }
     
     addMessage(msg){
+        // const resp = await this.chatApi.addMsg({ text: msg.text, author: msg.author, isPersonal: false });
+        // await chatController.showMessages(0, 30, { isPersonal: false }, 2000);
         this.msgList.user = currentUser;
         if(this.msgList.add(msg)){
             this.messagesView.display(this.msgList.getPage(0,10));
@@ -351,6 +524,8 @@ class ChatController{
     }
     
     editMessage(id, msg){
+        // const resp = await this.chatApi.editMessage(id, msg);
+        //  await chatController.showMessages(0, 30, { isPersonal: false }, 2000);
         this.msgList.user = currentUser;
         if(this.msgList.edit(id, msg)){
             this.messagesView.display(this.msgList.getPage(0,10));
@@ -360,19 +535,22 @@ class ChatController{
     }
     
     removeMessage(id){
+        // const resp = await this.chatApi.deleteMsg(id);
+        // await chatController.showMessages(0, 30, { isPersonal: false }, 2000);
         this.msgList.user = currentUser;
         if(this.msgList.remove(id)){
-            this.messagesView.display(this.msgList.getPage(0,10));
+            this.messagesView.display(this.msgList.getPage(0,25));
             return true;
         } 
         return false;
     }
+
     
-    showMessages(skip = 15, top = 10, filterConfig = {}){
+    showMessages(skip = 15, top = 10, filterConfig = {}, time = 10000){
         this.messagesView.display(this.msgList.getPage(skip, top, filterConfig));
     }
     
-    showUsers(){
+    showUsers(time = 10000){
         this.usersView.display(this.userList.users);
         this.msgList.save();
         this.userList.save();
@@ -380,31 +558,47 @@ class ChatController{
 
     
 
-    loginP(){
-        logIn.style.display="flex";
+    signUpP(){
+        signUp.style.display="flex";
         signIn.style.display="none";
         main.style.display="none";
+        errorBodyPage.style.display="none";
     }
     signinP(){
         signIn.style.display="flex";
-        logIn.style.display="none";
+        signUp.style.display="none";
         main.style.display="none";
+        errorBodyPage.style.display="none";
     }
 
 }
 
-function mainPageNoLogIn(){
+function mainPageNoSignUp(){
     signIn.style.display="none";
-    logIn.style.display="none";
+    signUp.style.display="none";
     main.style.display="block";
     hide.style.display="none";
+    mainPageFromError.style.display="none";
+    errorBodyPage.style.display="none";
 }
 
 function mainPage(){
     signIn.style.display="none";
-    logIn.style.display="none";
+    signUp.style.display="none";
     main.style.display="block";
     hide.style.display="flex";
+    mainPageFromError.style.display="none";
+    errorBodyPage.style.display="none";
+}
+
+function errorP(){
+    signIn.style.display="none";
+    signUp.style.display="none";
+    main.style.display="none";
+    hide.style.display="none";
+    mainPageFromError.style.display="inline-block";
+    errorBodyPage.style.display="flex";
+    bodyColorError.style.backgroundColor ="#FFF";
 }
 
 function signInPage(){
@@ -412,64 +606,81 @@ function signInPage(){
     formSignIn.onsubmit = function(event) {
         event.preventDefault();
         const hasUser = chatController.userList.users.find((login) => login == nameSignIn.value);
-        if(hasUser){ 
-            mainPage();
-            chatController.setCurrentUser(nameSignIn.value);
-            btnToSignIn.style.display="none";
-            if(passS.value === ''){
-                errorS.textContent = "The password is incorrect";
-            }
-        }
+        // try{
+        //     await  chatController.chatApi.putSignIn(nameSignIn.value, passS.value)
+        //     .then((result)=>{
+                if(hasUser){ 
+                    // chatController.chatApi._token = JSON.parse(result)._token;
+                    mainPage();
+                    chatController.setCurrentUser(nameSignIn.value);
+                    btnToSignIn.style.display="none";
+                    if(password.value === ''){
+                        errorS.textContent = "The password is incorrect";
+                    }
+                }
+        //     })
+        // }catch(error){
+            
+        // }
     };
 }
 
-function logInPage(){
-    chatController.loginP();
-    formLogin.onsubmit = function(event) {
+function signUpPage(){
+    chatController.signUpP();
+    formSignUp.onsubmit = async function(event) {
         event.preventDefault();
-        const newUser = nameLogin.value;
-        if(newUser){
-            if (passL.value === rPassL.value && passL.value !== ''){
-                chatController.userList.addUser(newUser);
-                mainPage();
-                chatController.setCurrentUser(nameLogin.value);
-                btnToSignIn.style.display="none";
-            }else{
-                errorL.textContent = "The password is incorrect"
-            }
-        };
+        const newUser = nameSignUp.value;
+        // try{
+            if(newUser){
+                if (passL.value === rPassL.value && passL.value !== ''){
+                    // await chatController.chatApi.putLogIn(nameSignUp.value, passL.value)
+                    chatController.userList.addUser(newUser);
+                    mainPage();
+                    chatController.setCurrentUser(nameSignUp.value);
+                    btnToSignIn.style.display="none";
+                }else{
+                    errorL.textContent = "The password is incorrect"
+                }
+            };
+        // }catch(error){
+        //     errorL.textContent = "The password is incorrect"
+        // }
     };
 }
 
 function exitF(){
     chatController.signinP();
-    user = '';
-    this.setCurrentUser(user);
+    currentUser = '';
+    chatController.setCurrentUser("currentUser");
 }
 
 function loadMoreMsgs(){
     debugger;
     if(chatController.msgList._messages.length > 10){
-        chatController.showMessages(0, 10);
+        chatController.showMessages(0, 25, {}, 2000);
     }
 }
 
 function findByFilter(){
     debugger;
     event.preventDefault();
-    const obj = {
-        author: findName.value,
-        text: findText.value,
-        dateFrom: findDate.value,
-    };
-    const filters = obj;
-    chatController.showMessages(0, 10, filters);
-    findName.value = '';
-    findText.value = '';
-    findDate.value = '';
-    if (findName.value !== chatController.author || findText.value !== chatController.text || findDate.value !== chatController.dateFrom) {
-        errorF.textContent = "Oops! Message not found!"
-    }
+    // try{
+    //     await chatController.chatApi.getPage(skip, top, {});
+        const obj = {
+            author: findName.value,
+            text: findText.value,
+            dateFrom: findDate.value,
+        };
+        const filters = obj;
+        chatController.showMessages(0, 25, filters,2000);
+        findName.value = '';
+        findText.value = '';
+        findDate.value = '';
+    // }catch(error){
+        if (findName.value !== chatController.author || findText.value !== chatController.text || findDate.value !== chatController.dateFrom) {
+            errorF.textContent = "Oops! Message not found!"
+        }
+    // }
 }
 
 function sendPrivateMsg(){
@@ -478,63 +689,56 @@ function sendPrivateMsg(){
     writeMsg.value = '';    
     const privatContainer = document.querySelector('.mine-message-container');
     privatContainer.style.border = "1px solid red";
-    chatController.showMessages(15, 10);
+    chatController.showMessages(15, 10, {}, 2000);
 }
 
 function sendMsg(){
     chatController.addMessage(writeMsg.value); 
-    chatController.showMessages(15, 10);
+    chatController.showMessages(15, 10, {}, 2000);
     writeMsg.value = '';      
 }
 
-function findId() {
-    const messages = document.querySelectorAll('.my-message');
-    const newArr = [...messages];
-    const target = event.target;
-    const msgContainer = target.closest('.my-message');
-    let comeMsg = chatController.msgList.getPage(0, chatController.msgList._messages.length, {author: chatController.msgList.user});
-    const index = newArr.indexOf(msgContainer);
-    return comeMsg[index].id;
-}
-
-function editMessage(){
+function editMessage(id){
     debugger;
-    const newMId = findId();
     const message = document.querySelector('.my-txt-msg');
     writeMsg.value = message.textContent;
-    chatController.editMessage(newMId, writeMsg.value);
-    chatController.showMessages(15, 10);
-    // writeMsg.value = ''; 
+    chatController.editMessage(id, writeMsg.value);
+    writeMsg.value
+    chatController.showMessages(15, 10, {}, 2000);
+    
 }
 
-function deleteMessage(){
+function deleteMessage(id){
     debugger;
-    const newMsgId = findId();
-    chatController.removeMessage(newMsgId);
-    chatController.showMessages(15, 10);
+    chatController.removeMessage(id);
+    chatController.showMessages(15, 10, {}, 2000);
 }
 
 
+const bodyColorError = document.getElementById('body-color-for-error');
+const errorBodyPage = document.getElementById('main-error-body');
+const mainPageFromError = document.getElementById('btn-to-mainPage');
 const signIn = document.getElementById('signin-page');
 const formSignIn = document.getElementById('formsignin');
 const nameSignIn = document.getElementById('namesig');
 const passS = document.getElementById('passsign');
 const btnSignIn = document.getElementById('btn-sigin');
 
-const logIn = document.getElementById('login-page');
-const formLogin = document.getElementById('formlogin');
-const nameLogin = document.getElementById('namelog');
+const signUp = document.getElementById('login-page');
+const formSignUp = document.getElementById('formlogin');
+const nameSignUp = document.getElementById('namelog');
 const passL = document.getElementById('passlog');
 const rPassL = document.getElementById('rpasslog');
-const btnLogIn = document.getElementById('btn-login');
+const btnSignUp = document.getElementById('btn-login');
 
 const errorL = document.getElementById('errorL');
 const errorS = document.getElementById('errorS');
 const errorF = document.getElementById('errorF');
 
 const toSignIn = document.getElementById('to-signin');
-const toLogIn = document.getElementById('to-login');
+const toSignUp = document.getElementById('to-login');
 const toMainS = document.getElementById('to-mains');
+const toMainE = document.getElementById('btn-to-mainPage')
 const toMainL = document.getElementById('to-mainl');
 const exit = document.getElementById('exit');
 const btnToSignIn = document.getElementById('btn-to-signin');
@@ -716,16 +920,16 @@ const activeS = 'Lera';
 const chatController = new ChatController(messages, users, activeUsers);
 chatController.showUsers();
 chatController.showMessages();
-mainPageNoLogIn();
-toMainS.addEventListener('click', () =>{mainPageNoLogIn()});
-toMainL.addEventListener('click', () =>{mainPageNoLogIn()});
+mainPageNoSignUp();
+toMainS.addEventListener('click', () =>{mainPageNoSignUp()});
+toMainL.addEventListener('click', () =>{mainPageNoSignUp()});
 btnToSignIn.addEventListener('click', () =>{signInPage()});
-toLogIn.addEventListener('click', () =>{logInPage()});
+toSignUp.addEventListener('click', () =>{signUpPage()});
 btnToSignIn.addEventListener('click', () =>{signInPage()});
 toSignIn.addEventListener('click', () =>{signInPage()});
-toLogIn.addEventListener('click', () =>{logInPage()});
+toSignUp.addEventListener('click', () =>{signUpPage()});
 exit.addEventListener('click', () =>{exitF()});
-
+toMainE.addEventListener('click', () =>{mainPageNoSignUp()});
 btnSend.addEventListener('click', () =>{sendMsg()});
 loadMore.addEventListener('click', () =>{loadMoreMsgs()});
 findBtn.addEventListener('click', () =>{findByFilter()});
