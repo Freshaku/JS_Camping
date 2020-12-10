@@ -7,17 +7,23 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body id="body-color-for-error">
     <div class="container">
         <!-- HEADER -->
-        <header class="header">
+        <header class="header" id="headerView">
             <h1 class="logo">TextMe</h1>
             <nav class="nav-on-pages">
                 <a href="#" class="nav-item" id="main-user"></a>
+                <a href="#" class="nav-item" id="btn-to-mainPage">Main page</a>
                 <a href="#" class="nav-item" id="btn-to-signin">Sign In</a>
                 <a href="#" class="nav-item" id="exit">Exit</a>
             </nav>
         </header>
+        <!--ERROR -->
+        <div class="main-error-body" id="main-error-body">
+            <img src="img/cloud.png" alt="cloud-error" class="error-pic">
+            <p class="error-main-text">Error 404 page not found</p>
+        </div>
         <!-- LOGIN -->
         <div class="login" id="login-page">
             <form action="" name="login" id="formlogin" class="login-form">
