@@ -717,11 +717,12 @@ async function findByFilter(){
 }
 
 function sendPrivateMsg(){
+    debugger
     const toUser = document.querySelector('.name-of-chat');
     chatController.addMessage(writeMsg.value); 
-    writeMsg.value = '';    
     const privatContainer = document.querySelector('.mine-message-container');
-    privatContainer.style.border = "1px solid red";
+    writeMsg.value = '';    
+    privatContainer.style.backgroundColor = "pink";
     chatController.showMessages(0, 30, {}, 2000);
 }
 
