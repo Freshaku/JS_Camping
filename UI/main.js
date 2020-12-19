@@ -526,6 +526,7 @@ class ChatController{
     
     async addMessage(msg){
         debugger;
+        this.msgList.user = currentUser;
         const nmsg = new Message(
             msg,
             false,
@@ -534,8 +535,8 @@ class ChatController{
             currentUser,
         );
         await this.chatApi.addMsg(nmsg);
-        await chatController.showMessages(0, 30, {});
-        this.msgList.user = currentUser;
+        await chatController.showMessages(0, 30, {},2000);
+        
         // if(this.msgList.add(msg)){
         //     this.messagesView.display(this.msgList.getPage(0,10));
         //     return true;
@@ -548,7 +549,7 @@ class ChatController{
             msg
         );
         await this.chatApi.editMessage(id, editMsg);
-        await chatController.showMessages(0, 30, {});
+        await chatController.showMessages(0, 30, {}, 2000);
         this.msgList.user = currentUser;
         // if(this.msgList.edit(id, msg)){
         //     this.messagesView.display(this.msgList.getPage(0,10));
@@ -559,7 +560,7 @@ class ChatController{
     
     async removeMessage(id){
         await this.chatApi.deleteMsg(id);
-        await chatController.showMessages(0, 30, {});
+        await chatController.showMessages(0, 30, {}, 2000);
         this.msgList.user = currentUser
         // if(this.msgList.remove(id)){
         //     this.messagesView.display(this.msgList.getPage(0,25));
@@ -569,7 +570,8 @@ class ChatController{
     }
 
     
-    async showMessages(skip = 0, top = 10, filterConfig = {}){
+    async showMessages(skip = 0, top = 10, filterConfig = {}, time = 6000){
+        setTimeout(() => this.chatApi.getMessages(skip, top, filterConfig), time);
         let msgs = await this.chatApi.getMessages(skip, top, filterConfig);
         console.log(JSON.stringify(msgs.reverse()));
         let newArrMesg = [];
@@ -578,10 +580,16 @@ class ChatController{
         // this.messagesView.display(this.msgList.getPage(skip, top, filterConfig));
     }
     
-    async showUsers(){
-        let users = await this.chatApi.getUsers();
-        this.usersView.display(users);
-        this.usersView.display(this.userList.users);
+    async showUsers(time = 6000){
+        const users = await this.chatApi.getUsers();
+        let allUsers = [];
+        for (var key in users) {
+            allUsers.push(users[key].name)
+        }
+        console.log(allUsers);
+        this.usersView.display(allUsers);
+        setTimeout(() => this.chatApi.getUsers(time));
+        // this.usersView.display(this.userList.users);
         
     }
 
@@ -674,7 +682,8 @@ function signUpPage(){
     };
 }
 
-function exitF(){
+async function exitF(){
+    await chatController.chatApi.logOut();
     chatController.signinP();
     currentUser = '';
     chatController.setCurrentUser("Guest");
@@ -682,7 +691,7 @@ function exitF(){
 
 function loadMoreMsgs(){
     if(chatController.msgList._messages.length > 10){
-        chatController.showMessages(0, 25, {});
+        chatController.showMessages(0, 25, {}, 2000);
     }
 }
 
@@ -696,7 +705,7 @@ async function findByFilter(){
             dateFrom: findDate.value,
         };
         const filters = obj;
-        await chatController.showMessages(0, 25, filters);
+        await chatController.showMessages(0, 25, filters, 2000);
         findName.value = '';
         findText.value = '';
         findDate.value = '';
@@ -713,24 +722,24 @@ function sendPrivateMsg(){
     writeMsg.value = '';    
     const privatContainer = document.querySelector('.mine-message-container');
     privatContainer.style.border = "1px solid red";
-    chatController.showMessages(0, 30, {});
+    chatController.showMessages(0, 30, {}, 2000);
 }
 
 function sendMsg(){
     try{
         chatController.addMessage( writeMsg.value); 
-        chatController.showMessages(0, 30, {});
+        chatController.showMessages(0, 30, {}, 2000);
         writeMsg.value = '';  
     }catch(error){
         response = errorP();
     }    
 }
 
-function editMessage(id){
+function editMessage(id,text){
     debugger;
-    const message = document.querySelector('.my-txt-msg');
-    writeMsg.value = message.textContent;
+    writeMsg.value = text;
     chatController.editMessage(id, writeMsg.value);
+    writeMsg.value = '';
     writeMsg.value
     chatController.showMessages(15, 10, {}, 2000);
     
@@ -739,7 +748,7 @@ function editMessage(id){
 function deleteMessage(id){
     debugger;
     chatController.removeMessage(id);
-    chatController.showMessages(15, 10, {});
+    chatController.showMessages(15, 10, {}, 2000);
 }
 
 
@@ -942,8 +951,8 @@ const users = ["JS chat", "Karina", "Artem", "Anton", "Lera", "Rsschool chat", "
 const activeUsers = ["Karina", "Lera"]
 const chatF = 'JS chat';
 const chatS = 'Rsschool chat';
-const activeF = 'Karina';
-const activeS = 'Lera';
+const activeF = 'Sasha';
+const activeS = 'Timur';
 
 const chatController = new ChatController(messages, users, activeUsers);
 chatController.showUsers();
