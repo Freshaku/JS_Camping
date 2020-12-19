@@ -292,6 +292,7 @@ input::-moz-placeholder{
     height: 36.5rem;
     border-radius: 0 0 2.4rem 0;
     overflow: auto;
+    overflow-x:hidden;
 }
 
 .users{
